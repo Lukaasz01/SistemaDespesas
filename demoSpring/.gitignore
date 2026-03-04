@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Dev Tools
+dev.bat
