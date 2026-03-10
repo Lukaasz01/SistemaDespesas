@@ -1,5 +1,7 @@
-package com.lucas.demo;
+package com.lucas.demo.controller;
 
+import com.lucas.demo.model.DespesaModel;
+import com.lucas.demo.repository.DespesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +15,12 @@ public class DespesaController {
     private DespesaRepository repository;
 
     @GetMapping
-    public List<Despesa> listarTodas() {
+    public List<DespesaModel> listarTodas() {
         return repository.findAll();
     }
 
     @PostMapping
-    public Despesa salvar(@RequestBody Despesa novaDespesa) {
+    public DespesaModel salvar(@RequestBody DespesaModel novaDespesa) {
         return repository.save(novaDespesa);
     }
 

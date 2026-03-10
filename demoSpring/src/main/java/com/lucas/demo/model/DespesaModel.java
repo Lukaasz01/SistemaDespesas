@@ -1,18 +1,16 @@
 package com.lucas.demo.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
-public class Despesa {
-    @Id
-    @GeneratedValue
-    private Long id;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
+@Entity
+public class DespesaModel {
+
+    private Long id;
     private String categoria;
     private String descricao;
     private BigDecimal valor;

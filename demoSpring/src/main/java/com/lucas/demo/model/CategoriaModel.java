@@ -1,7 +1,15 @@
 package com.lucas.demo.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+
 @Entity
-public class Categoria {
+public class CategoriaModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String Categoria;
     private String Descricao;
 
@@ -19,5 +27,6 @@ public class Categoria {
 
     public void setDescricao(String descricao) {
         Descricao = descricao;
-    
+
+    }
 }
