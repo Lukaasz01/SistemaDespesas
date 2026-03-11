@@ -17,7 +17,7 @@ public class LoginService {
         if (userFound == null){
             return "Usuário não cadastrado no Sistema!";
         } else if (password.equals(userFound.getPassword().trim())) {
-            return "Usuário Logado com sucess !";
+            return "Usuário Logado com sucesso !";
         } else {
             return "Senha ou Usuário incorreto!";
         }

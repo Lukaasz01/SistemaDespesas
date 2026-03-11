@@ -1,0 +1,363 @@
+<div class="flex h-screen bg-slate-50 font-sans text-slate-800 selection:bg-blue-100">
+
+    <!-- MENU LATERAL (SIDEBAR) -->
+    <aside class="w-64 bg-slate-900 text-slate-300 flex-col hidden md:flex transition-all duration-300 shadow-xl z-20">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div
+                class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3 text-white font-bold text-xl shadow-inner">
+                S
+            </div>
+            <span class="text-white font-bold text-lg tracking-wide">SysDespesas</span>
+        </div>
+
+        <!-- Links de Navegação -->
+        <nav class="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
+            <a href="#"
+                class="flex items-center px-3 py-2.5 bg-blue-600/15 text-blue-400 rounded-lg group transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+                Dashboard
+            </a>
+            <a href="#"
+                class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
+                <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                    </path>
+                </svg>
+                Transações
+            </a>
+            <a href="#"
+                class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
+                <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                </svg>
+                Categorias
+            </a>
+            <a href="#"
+                class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
+                <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                    </path>
+                </svg>
+                Relatórios
+            </a>
+        </nav>
+
+        <!-- Bottom Actions -->
+        <div class="p-4 border-t border-slate-800">
+            <a href="#"
+                class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
+                <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Configurações
+            </a>
+        </div>
+    </aside>
+
+    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
+    <div class="flex-1 flex flex-col overflow-hidden relative">
+
+        <!-- CABEÇALHO (HEADER) -->
+        <header
+            class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 shadow-sm">
+            <!-- Logo responsivo (Mobile) -->
+            <div class="flex items-center md:hidden">
+                <button class="text-slate-500 hover:text-slate-700 focus:outline-none p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <span class="ml-3 font-bold text-lg text-slate-800">SysDespesas</span>
+            </div>
+
+            <div class="hidden md:block">
+                <h1 class="text-xl font-bold text-slate-800">Visão Geral</h1>
+            </div>
+
+            <!-- Ações do Perfil -->
+            <div class="flex items-center space-x-5">
+                <button class="text-slate-400 hover:text-blue-600 transition-colors relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span
+                        class="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+                </button>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-semibold text-slate-700 leading-tight">João Silva</p>
+                        <p class="text-xs text-slate-500">Plano Pro</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-300 overflow-hidden shadow-sm">
+                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Avatar do Usuário"
+                            class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO SCROLLÁVEL DO DASHBOARD -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-8">
+
+            <!-- Controles de Período e Botões de Ação -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <div>
+                    <p class="text-sm text-slate-500 font-medium mb-1 uppercase tracking-wider">Mês Atual</p>
+                    <h2 class="text-2xl font-black text-slate-800 flex items-center gap-2">
+                        <!-- {{ currentMonth() }} -->
+                        <button class="text-slate-400 hover:text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h2>
+                </div>
+
+                <div class="flex w-full sm:w-auto space-x-3">
+                    <button
+                        class="flex-1 sm:flex-none flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+                        <svg class="w-4 h-4 mr-2 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4M12 4v16">
+                            </path>
+                        </svg>
+                        Despesa
+                    </button>
+                    <button
+                        class="flex-1 sm:flex-none flex items-center justify-center px-4 py-2.5 bg-blue-600 rounded-xl text-white text-sm font-semibold hover:bg-blue-700 hover:shadow-md transition-all shadow-sm">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
+                        </svg>
+                        Receita
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARDS DE RESUMO FINANCEIRO -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <!-- Card: Saldo -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative overflow-hidden group hover:border-blue-200 transition-colors">
+                    <div class="flex justify-between items-start relative z-10">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-500 mb-1">Saldo Atual</p>
+                            <h3 class="text-3xl font-black text-slate-800 tracking-tight">{{ formatCurrency(balance())
+                                }}</h3>
+                        </div>
+                        <div class="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-5 flex items-center text-sm relative z-10">
+                        <span
+                            class="text-emerald-500 font-semibold flex items-center bg-emerald-50 px-2 py-0.5 rounded-md">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                            </svg>
+                            12.5%
+                        </span>
+                        <span class="text-slate-400 ml-2 font-medium">vs. mês passado</span>
+                    </div>
+                    <!-- Decoração BG -->
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-50 rounded-full opacity-50 z-0"></div>
+                </div>
+
+                <!-- Card: Receitas -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 group hover:border-emerald-200 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-500 mb-1">Receitas Mês</p>
+                            <h3 class="text-2xl font-bold text-slate-800">{{ formatCurrency(income()) }}</h3>
+                        </div>
+                        <div
+                            class="p-3 bg-emerald-50 text-emerald-500 rounded-xl group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-5 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                        <div class="h-1.5 rounded-full bg-emerald-500 w-3/4"></div>
+                    </div>
+                </div>
+
+                <!-- Card: Despesas -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 group hover:border-rose-200 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-500 mb-1">Despesas Mês</p>
+                            <h3 class="text-2xl font-bold text-slate-800">{{ formatCurrency(expenses()) }}</h3>
+                        </div>
+                        <div class="p-3 bg-rose-50 text-rose-500 rounded-xl group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-5 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                        <div class="h-1.5 rounded-full bg-rose-500 w-2/4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO INFERIOR: GRIDS (Tabela & Gráficos) -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+                <!-- LISTA DE TRANSAÇÕES RECENTES (Ocupa 2 colunas) -->
+                <div
+                    class="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white">
+                        <h3 class="font-bold text-slate-800 text-lg">Transações Recentes</h3>
+                        <button
+                            class="text-sm font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
+                            Ver extrato completo
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50/80 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-slate-100">
+                                    <th class="px-6 py-4">Descrição</th>
+                                    <th class="px-6 py-4">Categoria</th>
+                                    <th class="px-6 py-4">Data</th>
+                                    <th class="px-6 py-4 text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @for (tx of transactions(); track tx.id) {
+                                <tr class="hover:bg-slate-50 transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <!-- Ícone da Transação Condicional via class binding do Angular moderno -->
+                                            <div
+                                                class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 shadow-sm {{ tx.type === 'income' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-600' }}">
+                                                @if (tx.type === 'income') {
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                                </svg>
+                                                } @else {
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z">
+                                                    </path>
+                                                </svg>
+                                                }
+                                            </div>
+                                            <span
+                                                class="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">{{
+                                                tx.description }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                            {{ tx.category }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-medium text-slate-500">{{ tx.date }}</td>
+                                    <!-- Estilização condicional do valor usando class binding por interpolação -->
+                                    <td
+                                        class="px-6 py-4 text-right font-bold text-base {{ tx.type === 'income' ? 'text-emerald-600' : 'text-slate-800' }}">
+                                        {{ tx.type === 'income' ? '+' : '-' }} {{ formatCurrency(tx.amount) }}
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DESPESAS POR CATEGORIA (Ocupa 1 coluna) -->
+                <div class="xl:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <div
+                        class="px-6 py-5 border-b border-slate-100 bg-white rounded-t-2xl flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Por Categoria</h3>
+                        <button class="text-slate-400 hover:text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="p-6 space-y-7 flex-1">
+                        @for (cat of categories(); track cat.name) {
+                        <div class="group">
+                            <div class="flex justify-between items-center mb-2.5">
+                                <span class="text-sm font-bold text-slate-700 flex items-center">
+                                    <span class="w-3 h-3 rounded-full mr-3 shadow-sm {{ cat.color }}"></span>
+                                    {{ cat.name }}
+                                </span>
+                                <span class="text-sm font-bold text-slate-800">{{ formatCurrency(cat.amount) }}</span>
+                            </div>
+
+                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex">
+                                <!-- Usa style binding nativo para ajustar a largura dinamicamente -->
+                                <div class="h-2 rounded-full transition-all duration-500 {{ cat.color }}"
+                                    [style.width.%]="cat.percentage"></div>
+                            </div>
+                            <div
+                                class="mt-1.5 text-right text-xs font-bold text-slate-400 group-hover:text-slate-600 transition-colors">
+                                {{ cat.percentage }}% do total
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="p-4 border-t border-slate-100 bg-slate-50/50 rounded-b-2xl">
+                        <button
+                            class="w-full flex items-center justify-center text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                            </svg>
+                            Análise Detalhada
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
