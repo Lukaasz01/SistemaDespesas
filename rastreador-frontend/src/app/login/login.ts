@@ -17,6 +17,7 @@ export class Login {
   private http = inject(HttpClient);
 
   logar() {
+    // Mandando JSON
     const dadosLogin = {
       email: this.identifier,
       password: this.password,
@@ -24,15 +25,14 @@ export class Login {
 
     console.log("Enviando para o Java: ", dadosLogin);
 
-    this.http.post('http://localhost:8080/login/entrar', dadosLogin, { responseType: 'text' })
-      .subscribe({
+    this.http.get('http://localhost:8080/login', {params: dadosLogin}).subscribe({
         next: (respostaDoJava) => {
-          alert('O Back-end respondeu: ' + respostaDoJava);
+          console.log(respostaDoJava);
           this.router.navigate(['/home']);
         },
         error: (erro) => {
-          console.error("Erro na comunicação com o Back-end:", erro);
-          alert('Falha ao comunicar com o servidor. Olhe o console (F12).');
+          console.log(erro);
+          alert(erro.error.erro);
         }
       });
   }

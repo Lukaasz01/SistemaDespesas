@@ -1,0 +1,16 @@
+<div>
+    <h1>Bem vindo ao sistema teste</h1>
+    <label>Email ou Usuário</label>
+    <br>
+    <input type="text" id="identifier" [(ngModel)]="identifier">
+    <br>
+    <label>Senha</label>
+    <br>
+    <input type="password" id="password" [(ngModel)]="password">
+    <br>
+    <button (click)="logar()">Logar</button>
+
+    <p>{{identifier}}</p>
+    <p>{{password}}</p>
+
+</div>

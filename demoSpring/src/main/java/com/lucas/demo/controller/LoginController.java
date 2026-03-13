@@ -1,13 +1,14 @@
 package com.lucas.demo.controller;
 
 import com.lucas.demo.repository.LoginRepository;
+import org.apache.coyote.Response;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.lucas.demo.model.LoginModel;
 import com.lucas.demo.service.LoginService;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -30,10 +31,10 @@ public class LoginController {
         repository.deleteById(id);
     }
 
-    @PostMapping("/entrar")
-    public String fazerLogin(@RequestBody @NonNull LoginModel dadosLogin) {
-
-        return service.executarLogin(dadosLogin.getEmail(), dadosLogin.getPassword());
+    @GetMapping
+    public ResponseEntity<LoginModel> fazerLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+        var result = service.executarLogin(email, password);
+        return ResponseEntity.ok(result);
     }
 
 }
