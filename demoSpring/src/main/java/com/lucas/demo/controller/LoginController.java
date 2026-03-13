@@ -32,7 +32,7 @@ public class LoginController {
     }
 
     @GetMapping
-    public ResponseEntity<LoginModel> fazerLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<String> fazerLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
         var result = service.executarLogin(email, password);
         return ResponseEntity.ok(result);
     }

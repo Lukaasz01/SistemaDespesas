@@ -11,16 +11,19 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private LoginRepository repository;
 
-    public LoginModel executarLogin(String email, String password) {
+    public String executarLogin(String email, String password) {
         LoginModel userFound = repository.findByEmail(email);
 
         if (userFound == null || !password.equals(userFound.getPassword().trim())) {
             throw new RequestErrorException("E-mail ou senha incorretos!");
         }
 
-        return userFound;
+        return tokenService.gerarToken(userFound);
     }
 
 }

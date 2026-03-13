@@ -17,7 +17,7 @@ export class Login {
   private http = inject(HttpClient);
 
   logar() {
-    // Mandando JSON
+    // json
     const dadosLogin = {
       email: this.identifier,
       password: this.password,
