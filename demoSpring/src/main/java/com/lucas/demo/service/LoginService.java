@@ -1,5 +1,6 @@
 package com.lucas.demo.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.lucas.demo.exception.GlobalExceptionHandler;
 import com.lucas.demo.exception.RequestErrorException;
 import com.lucas.demo.model.LoginModel;
@@ -23,6 +24,7 @@ public class LoginService {
             throw new RequestErrorException("E-mail ou senha incorretos!");
         }
 
+        System.out.println(tokenService);
         return tokenService.gerarToken(userFound);
     }
 

@@ -37,4 +37,10 @@ public class LoginController {
         return ResponseEntity.ok(result);
     }
 
+    @PostMapping("/auth")  // /login/auth (POST) - login que gera JWT
+    public ResponseEntity<String> fazerLogin(@RequestBody LoginModel loginData) {
+        var token = service.executarLogin(loginData.getEmail(), loginData.getPassword());
+        return ResponseEntity.ok(token);
+    }
+
 }

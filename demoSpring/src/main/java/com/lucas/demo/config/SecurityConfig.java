@@ -16,12 +16,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable())  // ← ADICIONE: desabilita pré-flight CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll() // 3. A SUA REGRA: Libera a porta de cadastro e de conferir senha
+                        .requestMatchers("/login/**").permitAll()  // ← SIMPLIFIQUE: libera tudo em /login
+                         .requestMatchers("/error").permitAll()     // ← ADICIONE: evita redirect 403
                         .anyRequest().authenticated()
-                ).build();
+                )
+                .build();
     }
+
+
 
 }
 
