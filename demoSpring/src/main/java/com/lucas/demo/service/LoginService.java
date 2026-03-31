@@ -6,6 +6,7 @@ import com.lucas.demo.exception.RequestErrorException;
 import com.lucas.demo.model.LoginModel;
 import com.lucas.demo.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,15 +18,17 @@ public class LoginService {
     @Autowired
     private LoginRepository repository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // 👈 injeta o encoder
+
     public String executarLogin(String email, String password) {
         LoginModel userFound = repository.findByEmail(email);
 
-        if (userFound == null || !password.equals(userFound.getPassword().trim())) {
+        // Verifica se usuário existe E se a senha bate com o hash
+        if (userFound == null || !passwordEncoder.matches(password, userFound.getPassword())) {
             throw new RequestErrorException("E-mail ou senha incorretos!");
         }
 
-        System.out.println(tokenService);
         return tokenService.gerarToken(userFound);
     }
-
 }

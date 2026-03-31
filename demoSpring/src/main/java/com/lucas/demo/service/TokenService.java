@@ -28,6 +28,19 @@ public class TokenService {
         }
     }
 
+    public String validarToken(String token) {
+        try {
+            Algorithm algoritmo = Algorithm.HMAC256(secret);
+            return JWT.require(algoritmo).withIssuer("rastreador-despesas-api")
+                    .build()
+                    .verify(token)
+                    .getSubject(); // retorna o ID do usuário, ou lança exceção se inválido
+        } catch (Exception e) {
+            return null; // Token inválido ou expirado
+        }
+
+    }
+
     // Função auxiliar que diz que o crachá vale por 2 horas a partir de agora
     private Instant gerarDataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
