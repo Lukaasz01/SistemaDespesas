@@ -5,6 +5,7 @@ import { Categorias } from './categorias/categorias';
 import { CreateUser } from './create-user/create-user';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     {path : 'login', component : Login},
     {path : 'home', component : HomeComponent},
     {path : 'categorias', component : Categorias},

@@ -6,6 +6,7 @@ import com.lucas.demo.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.lucas.demo.dto.TokenResponseDTO;
 
 @Service
 public class LoginService {
@@ -26,13 +27,20 @@ public class LoginService {
         return repository.save(user);
     }
 
-    public String executarLogin(String email, String password) {
+    public TokenResponseDTO executarLogin(String email, String password) {
         LoginModel userFound = repository.findByEmail(email);
 
         if (userFound == null || !passwordEncoder.matches(password, userFound.getPassword())) {
-            throw new RequestErrorException("E-mail ou senha incoretos!");
+            throw new RequestErrorException("E-mail ou senha incorretos!");
         }
 
-        return tokenService.gerarToken(userFound);
+        String tokenGerado = tokenService.gerarToken(userFound);
+
+        return new TokenResponseDTO(
+                tokenGerado,
+                userFound.getId(),
+                userFound.getEmail(),
+                userFound.getNome()
+        );
     }
 }

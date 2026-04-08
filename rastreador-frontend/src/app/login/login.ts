@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
+
 export class Login {
   identifier = '';
   password = '';
@@ -18,15 +19,12 @@ export class Login {
 
   logar() {
     const dadosLogin = {
-      email: this.identifier, // ou o campo do formulário correspondente
+      email: this.identifier, //
       password: this.password,
     };
 
     this.http.post('http://localhost:9000/login/auth', dadosLogin, { responseType: 'text' }).subscribe({
         next: (tokenDoJava) => {
-          console.log("SUCESSO! O Token é: ", tokenDoJava);
-
-          // salva o token
           sessionStorage.setItem('meu_token', tokenDoJava);
           this.router.navigate(['/home']);
         },
