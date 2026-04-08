@@ -1,7 +1,5 @@
 package com.lucas.demo.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.lucas.demo.exception.GlobalExceptionHandler;
 import com.lucas.demo.exception.RequestErrorException;
 import com.lucas.demo.model.LoginModel;
 import com.lucas.demo.repository.LoginRepository;
@@ -19,14 +17,20 @@ public class LoginService {
     private LoginRepository repository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // 👈 injeta o encoder
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public LoginModel salvarUsuario(LoginModel user){
+        String senhaCodificada = passwordEncoder.encode(user.getPassword());
+
+        user.setPassword(senhaCodificada);
+        return repository.save(user);
+    }
 
     public String executarLogin(String email, String password) {
         LoginModel userFound = repository.findByEmail(email);
 
-        // Verifica se usuário existe E se a senha bate com o hash
         if (userFound == null || !passwordEncoder.matches(password, userFound.getPassword())) {
-            throw new RequestErrorException("E-mail ou senha incorretos!");
+            throw new RequestErrorException("E-mail ou senha incoretos!");
         }
 
         return tokenService.gerarToken(userFound);

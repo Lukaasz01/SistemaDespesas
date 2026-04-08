@@ -12,29 +12,29 @@ import { HttpClient } from '@angular/common/http';
 export class Login {
   identifier = '';
   password = '';
-  
+
   private router = inject(Router);
   private http = inject(HttpClient);
 
   logar() {
-    // json
     const dadosLogin = {
-      email: this.identifier,
+      email: this.identifier, // ou o campo do formulário correspondente
       password: this.password,
     };
 
-    console.log("Enviando para o Java: ", dadosLogin);
+    this.http.post('http://localhost:9000/login/auth', dadosLogin, { responseType: 'text' }).subscribe({
+        next: (tokenDoJava) => {
+          console.log("SUCESSO! O Token é: ", tokenDoJava);
 
-    this.http.get('http://localhost:8080/login', {params: dadosLogin}).subscribe({
-        next: (respostaDoJava) => {
-          console.log(respostaDoJava);
+          // salva o token
+          sessionStorage.setItem('meu_token', tokenDoJava);
           this.router.navigate(['/home']);
         },
         error: (erro) => {
-          console.log(erro);
-          alert(erro.error.erro);
+          console.error("Erro detalhado: ", erro);
+          alert("Falha no login!");
         }
-      });
+    });
   }
 
 }

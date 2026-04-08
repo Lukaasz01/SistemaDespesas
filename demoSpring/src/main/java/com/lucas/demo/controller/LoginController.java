@@ -22,8 +22,8 @@ public class LoginController {
     private LoginService service;
 
     @PostMapping
-    public LoginModel saveUser(@RequestBody LoginModel User ) {
-        return repository.save(User);
+    public LoginModel saveUser(@RequestBody LoginModel user){
+        return service.salvarUsuario(user);
     }
 
     @DeleteMapping
@@ -37,7 +37,7 @@ public class LoginController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/auth")  // /login/auth (POST) - login que gera JWT
+    @PostMapping("/auth")
     public ResponseEntity<String> fazerLogin(@RequestBody LoginModel loginData) {
         var token = service.executarLogin(loginData.getEmail(), loginData.getPassword());
         return ResponseEntity.ok(token);
