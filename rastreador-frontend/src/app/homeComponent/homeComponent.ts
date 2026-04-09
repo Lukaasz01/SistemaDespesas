@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 interface Transaction {
   id: string;
@@ -18,11 +19,16 @@ interface CategorySummary {
 
 @Component({
   selector: 'app-home',
-  imports: [], // Se estiver usando Angular 17+, componentes já podem ser standalone
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './homeComponent.html',
-  styleUrl: './homeComponent.css', // CORREÇÃO: Usar styleUrl (singular) para arquivos externos
-  changeDetection: ChangeDetectionStrategy.OnPush, // Adicionado para otimizar os Signals
+  styleUrl: './homeComponent.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
+  menuAberto: boolean = false;
+
+  toggleMenu() {
+    this.menuAberto = !this.menuAberto;
+  }
 
 }

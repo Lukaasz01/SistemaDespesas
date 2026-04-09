@@ -1,1 +1,502 @@
-<p>categorias teste</p>
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finova - Categorias</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    .dashboard-wrapper {
+        background-color: #f4f7f6;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    /* --- Sidebar (Mantida para consistência) --- */
+    .sidebar {
+        width: 260px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        min-height: 100vh;
+        color: white;
+        transition: all 0.3s;
+        position: fixed;
+        z-index: 1000;
+    }
+
+    .sidebar-brand {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link-custom {
+        color: rgba(255, 255, 255, 0.7);
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.5rem;
+        margin: 0.2rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .nav-link-custom:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link-custom.active {
+        color: white;
+        background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+    }
+
+    /* --- Main Content --- */
+    .main-content {
+        margin-left: 260px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s;
+    }
+
+    .top-navbar {
+        background: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .content-padding {
+        padding: 2rem;
+    }
+
+    /* --- Cards das Categorias --- */
+    .category-card {
+        background: white;
+        border-radius: 1rem;
+        border: none;
+        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.02);
+        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+    }
+
+    .category-icon-large {
+        width: 56px;
+        height: 56px;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .category-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .category-card:hover .category-actions {
+        opacity: 1;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        color: #6c757d;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        transition: all 0.2s;
+    }
+    .btn-icon:hover {
+        color: #0072ff;
+        border-color: #0072ff;
+        background: white;
+    }
+    .btn-icon.danger:hover {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    /* Botão Novo Gradiente */
+    .btn-primary-gradient {
+        background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        color: white;
+        border: none;
+        transition: all 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 114, 255, 0.2);
+    }
+    .btn-primary-gradient:hover {
+        opacity: 0.9;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* Seletores de Cor (Modal) */
+    .color-picker-wrapper {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .color-option {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: transform 0.1s;
+    }
+    .color-option:hover {
+        transform: scale(1.1);
+    }
+    .color-option.active {
+        border-color: #343a40;
+        transform: scale(1.1);
+    }
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+        .sidebar { transform: translateX(-100%); }
+        .sidebar.show { transform: translateX(0); }
+        .main-content { margin-left: 0; }
+        .content-padding { padding: 1rem; }
+        .category-actions { opacity: 1; } /* Sempre visível no mobile */
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-wrapper">
+  <!-- Sidebar (Mesma estrutura) -->
+  <div class="sidebar d-flex flex-column" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+        <i class="bi bi-wallet2 fs-5"></i>
+      </div>
+      Finova
+    </div>
+
+    <div class="flex-grow-1 mt-4">
+      <p class="text-white-50 small text-uppercase px-4 mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Menu Principal</p>
+
+      <a routerLink="/home" class="nav-link-custom">
+        <i class="bi bi-grid-1x2-fill"></i>
+        Dashboard
+      </a>
+
+      <a routerLink="/categorias" class="nav-link-custom active">
+        <i class="bi bi-tags"></i>
+        Categorias
+      </a>
+    </div>
+
+    <div class="mt-auto mb-4">
+      <a href="" class="nav-link-custom text-white-50 hover-white mt-1">
+        <i class="bi bi-box-arrow-right"></i>
+        Terminar Sessão
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+
+    <!-- Topbar -->
+    <header class="top-navbar">
+      <div class="d-flex align-items-center">
+        <button class="btn btn-light d-md-none me-2" id="sidebarToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <h4 class="mb-0 fw-bold text-dark d-none d-md-block">Gestão de Categorias</h4>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px;">
+            US
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="content-padding">
+
+      <!-- Header da Seção -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div>
+          <h2 class="fw-bold text-dark mb-1">Categorias de Gastos</h2>
+          <p class="text-muted mb-0">Organize suas despesas criando categorias e limites mensais.</p>
+        </div>
+
+        <!-- Botão que abre o Modal -->
+        <button class="btn btn-primary-gradient px-4 py-2 rounded-3 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalCategoria">
+          <i class="bi bi-plus-lg"></i>
+          <span>Nova Categoria</span>
+        </button>
+      </div>
+
+      <!-- Estatísticas Rápidas -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="bg-white p-3 rounded-3 shadow-sm border border-light">
+            <p class="text-muted small mb-1">Total de Categorias</p>
+            <h4 class="fw-bold mb-0">8</h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="bg-white p-3 rounded-3 shadow-sm border border-light">
+            <p class="text-muted small mb-1">Maior Gasto (Mês)</p>
+            <h4 class="fw-bold mb-0 text-danger">Alimentação</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Categorias -->
+      <div class="row g-4">
+
+        <!-- Categoria 1 -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="category-card p-4 border-top border-4" style="border-top-color: #dc3545 !important;">
+            <div class="category-actions">
+              <button class="btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+              <button class="btn-icon danger ms-1" title="Inativar"><i class="bi bi-trash"></i></button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="category-icon-large bg-danger bg-opacity-10 text-danger">
+                <i class="bi bi-cart3"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold text-dark mb-0">Alimentação</h5>
+                <span class="badge bg-light text-dark border mt-1">Despesa Fixa</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Gasto atual: <strong>R$ 850,00</strong></span>
+                <span>Limite: R$ 1.000,00</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <p class="small text-danger mt-2 mb-0 fw-medium"><i class="bi bi-exclamation-circle"></i> Atenção: Próximo ao limite!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 2 -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="category-card p-4 border-top border-4" style="border-top-color: #0d6efd !important;">
+            <div class="category-actions">
+              <button class="btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+              <button class="btn-icon danger ms-1" title="Inativar"><i class="bi bi-trash"></i></button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="category-icon-large bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-car-front"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold text-dark mb-0">Transporte</h5>
+                <span class="badge bg-light text-dark border mt-1">Despesa Variável</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Gasto atual: <strong>R$ 120,00</strong></span>
+                <span>Limite: R$ 400,00</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 3 -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="category-card p-4 border-top border-4" style="border-top-color: #198754 !important;">
+            <div class="category-actions">
+              <button class="btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+              <button class="btn-icon danger ms-1" title="Inativar"><i class="bi bi-trash"></i></button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="category-icon-large bg-success bg-opacity-10 text-success">
+                <i class="bi bi-house-door"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold text-dark mb-0">Moradia</h5>
+                <span class="badge bg-light text-dark border mt-1">Despesa Fixa</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Gasto atual: <strong>R$ 1.500,00</strong></span>
+                <span>Limite: Sem limite</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 4 -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="category-card p-4 border-top border-4" style="border-top-color: #6f42c1 !important;">
+            <div class="category-actions">
+              <button class="btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+              <button class="btn-icon danger ms-1" title="Inativar"><i class="bi bi-trash"></i></button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="category-icon-large" style="background-color: rgba(111, 66, 193, 0.1); color: #6f42c1;">
+                <i class="bi bi-controller"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold text-dark mb-0">Lazer</h5>
+                <span class="badge bg-light text-dark border mt-1">Despesa Variável</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Gasto atual: <strong>R$ 350,00</strong></span>
+                <span>Limite: R$ 500,00</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" role="progressbar" style="width: 70%; background-color: #6f42c1;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Adicionar / Editar Categoria -->
+<div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="border-radius: 1rem;">
+
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold" id="modalCategoriaLabel">Nova Categoria</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body pt-4">
+        <!-- O formulário abaixo usa inputs padrão, no Angular você conectará via [(ngModel)] ou FormGroup -->
+        <form>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium text-dark small">Nome da Categoria</label>
+            <input type="text" class="form-control rounded-3" placeholder="Ex: Educação, Assinaturas..." required>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-6">
+              <label class="form-label fw-medium text-dark small">Tipo</label>
+              <select class="form-select rounded-3">
+                <option value="fixa">Despesa Fixa</option>
+                <option value="variavel">Despesa Variável</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-medium text-dark small">Orçamento Limite (Mês)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0">R$</span>
+                <input type="number" class="form-control rounded-end-3 border-start-0 ps-0" placeholder="0,00">
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium text-dark small">Ícone</label>
+            <select class="form-select rounded-3" style="font-family: 'bootstrap-icons', sans-serif;">
+              <option value="cart">&#xF23F; Carrinho (Alimentação)</option>
+              <option value="car">&#xF22B; Carro (Transporte)</option>
+              <option value="house">&#xF425; Casa (Moradia)</option>
+              <option value="controller">&#xF2CA; Controle (Lazer)</option>
+              <option value="heart">&#xF415; Saúde</option>
+              <option value="book">&#xF1E1; Educação</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-medium text-dark small">Cor de Destaque</label>
+            <div class="color-picker-wrapper">
+              <div class="color-option active" style="background-color: #dc3545;" title="Vermelho"></div>
+              <div class="color-option" style="background-color: #0d6efd;" title="Azul"></div>
+              <div class="color-option" style="background-color: #198754;" title="Verde"></div>
+              <div class="color-option" style="background-color: #ffc107;" title="Amarelo"></div>
+              <div class="color-option" style="background-color: #6f42c1;" title="Roxo"></div>
+              <div class="color-option" style="background-color: #fd7e14;" title="Laranja"></div>
+              <div class="color-option" style="background-color: #20c997;" title="Turquesa"></div>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary-gradient py-2 rounded-3 fw-semibold">
+              Salvar Categoria
+            </button>
+            <button type="button" class="btn btn-light py-2 rounded-3 text-muted" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts Bootstrap para funcionamento do Modal -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Lógica simples para os seletores de cor no HTML estático
+  document.querySelectorAll('.color-option').forEach(el => {
+      el.addEventListener('click', function() {
+          document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+          this.classList.add('active');
+      });
+  });
+</script>
+</body>
+</html>
