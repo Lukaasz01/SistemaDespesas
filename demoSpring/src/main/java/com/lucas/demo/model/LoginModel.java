@@ -16,6 +16,7 @@ public class LoginModel {
 
     @Column(unique = true)
     private String email;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Permite ler a senha, mas nunca exibi-lá
     private String password;
 
@@ -34,4 +35,5 @@ public class LoginModel {
 
     public void setPassword(String password) { this.password = password; }
 
+    public void setNome(String nome) { this.nome = nome; }
 }

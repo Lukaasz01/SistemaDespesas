@@ -17,11 +17,15 @@ public class DespesaModel {
     private String descricao;
     private BigDecimal valor;
     private LocalDate data;
+    private String nome;
+
+    public String getNome(){ return nome; }
 
     public Long getId() {
         return id;
     }
 
+    public void setNome(String nome){ this.nome = nome; }
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,7 +33,6 @@ public class DespesaModel {
     public String getCategoria() {
         return categoria;
     }
-
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
@@ -37,7 +40,6 @@ public class DespesaModel {
     public String getDescricao() {
         return descricao;
     }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -45,7 +47,6 @@ public class DespesaModel {
     public BigDecimal getValor() {
         return valor;
     }
-
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
@@ -53,7 +54,6 @@ public class DespesaModel {
     public LocalDate getData() {
         return data;
     }
-
     public void setData(LocalDate data) {
         this.data = data;
     }
