@@ -1,0 +1,213 @@
+<div class="dashboard-wrapper">
+  <aside class="sidebar d-flex flex-column" id="sidebar" [class.show]="menuAberto">
+    <div class="sidebar-brand">
+      <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center brand-icon">
+        <i class="bi bi-wallet2 fs-5"></i>
+      </div>
+      Finova
+    </div>
+
+    <div class="flex-grow-1 mt-4">
+      <p class="text-white-50 small text-uppercase px-4 mb-2 section-label">Menu Principal</p>
+      <a routerLink="/home" class="nav-link-custom">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+      </a>
+      <a routerLink="/categorias" class="nav-link-custom active">
+        <i class="bi bi-tags"></i> Categorias
+      </a>
+    </div>
+
+    <div class="mt-auto mb-4">
+      <a routerLink="/login" class="nav-link-custom text-white-50 mt-1">
+        <i class="bi bi-box-arrow-right"></i> Terminar Sessao
+      </a>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center">
+        <button type="button" class="btn btn-light d-md-none me-2" (click)="toggleSidebar()">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <nav aria-label="breadcrumb" class="d-none d-md-block">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/categorias">Categorias</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nova Categoria</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="fw-semibold text-dark">Utilizador Teste</span>
+        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold avatar">US</div>
+      </div>
+    </header>
+
+    <div class="content-padding">
+      <div class="row">
+        <div class="col-12 col-lg-7 mb-4">
+          <div class="form-card p-4 p-md-5">
+            <div class="mb-4">
+              <h3 class="fw-bold text-dark mb-1">Criar Categoria</h3>
+              <p class="text-muted">Preencha os dados abaixo para organizar melhor as suas financas.</p>
+            </div>
+
+            <form (ngSubmit)="salvarCategoria()">
+              <div class="row g-3 mb-4">
+                <div class="col-md-7">
+                  <label class="form-label fw-semibold small text-uppercase text-muted">Nome da Categoria</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg rounded-3"
+                    id="catName"
+                    name="catName"
+                    [(ngModel)]="nome"
+                    placeholder="Ex: Assinaturas de Streaming"
+                    required
+                  />
+                </div>
+
+                <div class="col-md-5">
+                  <label class="form-label fw-semibold small text-uppercase text-muted">Tipo de Despesa</label>
+                  <select class="form-select form-control-lg rounded-3" name="tipoDespesa" [(ngModel)]="tipoDespesa">
+                    <option value="fixa">Despesa Fixa</option>
+                    <option value="variavel">Despesa Variavel</option>
+                    <option value="essencial">Essencial</option>
+                    <option value="lazer">Lazer / Estilo de Vida</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold small text-uppercase text-muted">Orcamento Mensal (Opcional)</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text rounded-start-3">R$</span>
+                  <input
+                    type="number"
+                    class="form-control rounded-end-3"
+                    name="orcamentoMensal"
+                    [(ngModel)]="orcamentoMensal"
+                    min="0"
+                    step="0.01"
+                    placeholder="0,00"
+                  />
+                </div>
+                <div class="form-text mt-2">Defina um limite para receber alertas quando estiver proximo de atingi-lo.</div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold small text-uppercase text-muted">Escolha um Icone</label>
+                <div class="icon-grid">
+                  <button
+                    *ngFor="let icone of opcoesIcones"
+                    type="button"
+                    class="icon-option"
+                    [class.active]="iconeSelecionado === icone"
+                    (click)="selecionarIcone(icone)"
+                    [attr.aria-label]="'Selecionar icone ' + icone"
+                  >
+                    <i class="bi" [ngClass]="icone"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold small text-uppercase text-muted">Cor de Destaque</label>
+                <div class="color-picker-grid">
+                  <button
+                    *ngFor="let cor of opcoesCores"
+                    type="button"
+                    class="color-circle"
+                    [class.active]="corSelecionada === cor"
+                    [style.backgroundColor]="cor"
+                    (click)="selecionarCor(cor)"
+                    [attr.aria-label]="'Selecionar cor ' + cor"
+                  ></button>
+                </div>
+              </div>
+
+              <div *ngIf="erro" class="alert alert-danger border-0 rounded-3" role="alert">
+                {{ erro }}
+              </div>
+
+              <div *ngIf="mensagem" class="alert alert-success border-0 rounded-3" role="alert">
+                {{ mensagem }}
+              </div>
+
+              <div class="d-flex gap-3 mt-4">
+                <button type="submit" class="btn btn-primary-gradient px-5 py-3 rounded-3 flex-grow-1 flex-md-grow-0">
+                  Criar Categoria
+                </button>
+                <a routerLink="/categorias" class="btn btn-light px-4 py-3 rounded-3 text-muted border">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="preview-sticky">
+            <div class="text-center mb-3">
+              <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill small text-uppercase">
+                Pre-visualizacao
+              </span>
+            </div>
+
+            <div class="category-preview-card p-4 border-top border-4" [style.borderTopColor]="corSelecionada">
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <div
+                  class="rounded-3 d-flex align-items-center justify-content-center preview-icon-bg"
+                  [style.backgroundColor]="corPreviewSuave"
+                  [style.color]="corSelecionada"
+                >
+                  <i class="bi" [ngClass]="iconeSelecionado"></i>
+                </div>
+                <div>
+                  <h5 class="fw-bold text-dark mb-0">{{ tituloPreview }}</h5>
+                  <span class="badge bg-light text-dark border mt-1">{{ tipoPreview }}</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="d-flex justify-content-between small text-muted mb-1">
+                  <span>Gasto atual: <strong>{{ formatarMoeda(0) }}</strong></span>
+                  <span>Limite: {{ formatarMoeda(orcamentoMensal) }}</span>
+                </div>
+                <div class="progress progress-preview">
+                  <div class="progress-bar" role="progressbar" [style.backgroundColor]="corSelecionada" style="width: 0%;"></div>
+                </div>
+                <p class="small text-muted mt-2 mb-0">Nenhum gasto registado este mes.</p>
+              </div>
+            </div>
+
+            <div class="alert alert-info border-0 mt-4 rounded-3 d-flex gap-3">
+              <i class="bi bi-info-circle fs-4"></i>
+              <div class="small">
+                As cores e icones ajudam a identificar rapidamente onde voce gasta o seu dinheiro.
+              </div>
+            </div>
+
+            <div *ngIf="categoriasCriadas.length > 0" class="card border-0 shadow-sm mt-3">
+              <div class="card-body">
+                <p class="text-muted small text-uppercase mb-2">Ultima categoria criada</p>
+                <div class="d-flex align-items-center gap-3">
+                  <div
+                    class="rounded-3 d-flex align-items-center justify-content-center preview-icon-mini"
+                    [style.backgroundColor]="corSuave(categoriasCriadas[0].cor)"
+                    [style.color]="categoriasCriadas[0].cor"
+                  >
+                    <i class="bi" [ngClass]="categoriasCriadas[0].icone"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">{{ categoriasCriadas[0].nome }}</h6>
+                    <small class="text-muted">{{ formatarMoeda(categoriasCriadas[0].orcamentoMensal) }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
