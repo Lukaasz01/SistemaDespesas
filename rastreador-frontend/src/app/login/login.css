@@ -1,0 +1,75 @@
+/* Fundo com gradiente moderno */
+body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Estilo do cartão principal */
+.login-card {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+}
+
+/* Cabeçalho do cartão com pequeno destaque de cor */
+.card-header-accent {
+    height: 6px;
+    background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+    width: 100%;
+}
+
+/* Botão principal customizado */
+.btn-primary-custom {
+    background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 114, 255, 0.3);
+    color: white;
+}
+
+/* Inputs customizados */
+.form-control:focus {
+    border-color: #0072ff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 114, 255, 0.15);
+}
+
+/* Botão de ver palavra-passe alinhado no floating label */
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    z-index: 5; /* Para ficar acima do input */
+    padding: 0;
+}
+.password-toggle:hover {
+    color: #0072ff;
+}
+
+/* Redes sociais */
+.social-btn {
+    border: 1px solid #dee2e6;
+    background-color: white;
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.social-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #c1c9d0;
+}

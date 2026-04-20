@@ -23,7 +23,7 @@ public class LoginController {
     private LoginService service;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> saveUser(@RequestBody LoginModel user){ // ✅ Agora sim!
+    public ResponseEntity<UsuarioResponseDTO> saveUser(@RequestBody LoginModel user){
         LoginModel usuarioSalvo = service.salvarUsuario(user);
         return ResponseEntity.ok(new UsuarioResponseDTO(usuarioSalvo));
     }

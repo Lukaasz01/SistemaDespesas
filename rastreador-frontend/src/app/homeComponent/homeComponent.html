@@ -3,68 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finova - Dashboard</title>
 
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 
-<!-- O wrapper substitui o body para funcionar bem no Angular -->
+<app-sidebar-menu></app-sidebar-menu>
+
 <div class="dashboard-wrapper">
 
-  <div class="sidebar d-flex flex-column" id="sidebar" [class.show]="menuAberto">
-    <div class="sidebar-brand">
-      <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-        <i class="bi bi-wallet2 fs-5"></i>
-      </div>
-      Finova
-    </div>
-
-    <div class="flex-grow-1 mt-4">
-      <p class="text-white-50 small text-uppercase px-4 mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Menu Principal</p>
-
-      <a routerLink="/home" class="nav-link-custom" routerLinkActive="active">
-        <i class="bi bi-grid-1x2-fill"></i>
-        Dashboard
-      </a>
-
-      <a routerLink="/categorias" class="nav-link-custom" routerLinkActive="active">
-        <i class="bi bi-tags"></i>
-        Categorias
-      </a>
-
-    </div>
-
-    <div class="mt-auto mb-4">
-      <a routerLink="/configuracoes" class="nav-link-custom text-white-50 mt-1">
-        <i class="bi bi-gear"></i>
-        Configurações
-      </a>
-      <a routerLink="/login" class="nav-link-custom text-white-50 mt-1">
-        <i class="bi bi-box-arrow-right"></i>
-        Terminar Sessão
-      </a>
-    </div>
-  </div>
-
+  <!-- Main Content -->
   <div class="main-content" id="mainContent">
 
+    <!-- Topbar -->
     <header class="top-navbar">
       <div class="d-flex align-items-center">
+        <!-- Botão Menu Mobile -->
         <button class="btn btn-light d-md-none me-2" (click)="toggleMenu()">
           <i class="bi bi-list fs-4"></i>
         </button>
         <h4 class="mb-0 fw-bold text-dark d-none d-md-block">Visão Geral</h4>
       </div>
 
+      <div class="d-flex align-items-center gap-3">
+        <a routerLink="/configuracoes" class="btn btn-light rounded-circle position-relative p-2">
+          <i class="bi bi-bell fs-5 text-muted"></i>
+          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">Novos alertas</span>
+          </span>
+        </a>
+        <a routerLink="paginaUsuario" class="d-flex align-items-center gap-2" style="cursor: pointer;">
+          <div class="avatar-circle bg-primary bg-opacity-10 text-primary">
+            Lg
+          </div>
+          <div class="d-none d-md-block">
+            <p class="mb-0 fw-semibold text-dark fs-6" style="line-height: 1;">{{nomeUsuario()}}</p>
+            <small class="text-muted" style="font-size: 0.75rem;">Plano Grátis</small>
+          </div>
+        </a>
+      </div>
     </header>
 
+    <!-- Dashboard Content -->
     <div class="content-padding">
-    </div>
 
+      <div class="mb-4">
+        <h2 class="fw-bold text-dark mb-1">Olá, {{nomeUsuario()}}! 👋</h2>
+        <p class="text-muted">Aqui está o resumo das suas finanças deste mês.</p>
+      </div>
+
+      <!-- Resumo Financeiro (Cards) -->
+      <div class="row g-4 mb-4">
+        <!-- Card Saldo -->
+        <div class="col-12 col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <p class="text-muted mb-1 fw-medium">Saldo Atual</p>
+                <h3 class="fw-bold text-dark mb-0">R$ 5.432,00</h3>
+              </div>
+              <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-wallet2"></i>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 text-success small fw-medium">
+              <i class="bi bi-arrow-up-right"></i>
+              <span>+2.5% desde o mês passado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Receitas -->
+        <div class="col-12 col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <p class="text-muted mb-1 fw-medium">Receitas</p>
+                <h3 class="fw-bold text-dark mb-0">R$ 8.150,00</h3>
+              </div>
+              <div class="icon-box bg-success bg-opacity-10 text-success">
+                <i class="bi bi-graph-up-arrow"></i>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <span>Previsto: R$ 8.500,00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Despesas -->
+        <div class="col-12 col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <p class="text-muted mb-1 fw-medium">Despesas</p>
+                <h3 class="fw-bold text-dark mb-0">R$ 2.718,00</h3>
+              </div>
+              <div class="icon-box bg-danger bg-opacity-10 text-danger">
+                <i class="bi bi-graph-down-arrow"></i>
+              </div>
+            </div>
+            <!-- Exemplo de barra de progresso para o orçamento -->
+            <div class="mt-2">
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Orçamento mensal</span>
+                <span>54%</span>
+              </div>
+              <div class="progress" style="height: 6px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Últimas Transações -->
+        <div class="col-12 col-lg-8">
+          <div class="glass-card h-100">
+            <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+              <h5 class="fw-bold mb-0">Últimas Transações</h5>
+              <a href="#" class="text-decoration-none small" style="color: #0072ff;">Ver todas</a>
+            </div>
+            <div class="p-0">
+              <!-- Angular *ngFor irá iterar aqui -->
+
+              <!-- Transação Exemplo 1 -->
+              <div class="transaction-item">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-danger bg-opacity-10 text-danger rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
+                    <i class="bi bi-cart"></i>
+                  </div>
+                  <div>
+                    <p class="fw-semibold text-dark mb-0">Supermercado</p>
+                    <p class="text-muted small mb-0">Alimentação • Hoje, 14:30</p>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <p class="fw-bold text-dark mb-0">- R$ 350,00</p>
+                </div>
+              </div>
+
+              <!-- Transação Exemplo 2 -->
+              <div class="transaction-item">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
+                    <i class="bi bi-cash-stack"></i>
+                  </div>
+                  <div>
+                    <p class="fw-semibold text-dark mb-0">Salário</p>
+                    <p class="text-muted small mb-0">Rendimento • Ontem, 09:00</p>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <p class="fw-bold text-success mb-0">+ R$ 5.500,00</p>
+                </div>
+              </div>
+
+              <!-- Transação Exemplo 3 -->
+              <div class="transaction-item">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
+                    <i class="bi bi-lightning"></i>
+                  </div>
+                  <div>
+                    <p class="fw-semibold text-dark mb-0">Conta de Luz</p>
+                    <p class="text-muted small mb-0">Contas Fixas • 12 de Abr</p>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <p class="fw-bold text-dark mb-0">- R$ 120,50</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="col-12 col-lg-4">
+          <div class="glass-card p-4 h-100">
+            <h5 class="fw-bold mb-4">Ações Rápidas</h5>
+
+            <div class="d-grid gap-3">
+              <a routerLink="/categoria/cadastro" class="btn btn-primary-gradient py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                <i class="bi bi-plus-circle fs-5"></i>
+                <span class="text-decoration-none text-white">
+                  <span class="fw-semibold">Nova Despesa</span>
+                </span>
+              </a>
+
+              <button class="btn btn-custom-action py-3 rounded-3 d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-arrow-down-circle fs-5 text-success"></i>
+                <span>Nova Receita</span>
+              </button>
+
+              <!-- Botão para a tela que você já tem -->
+              <button class="btn btn-custom-action py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 mt-2">
+                <i class="bi bi-tags fs-5 text-secondary"></i>
+                <span>Gerir Categorias</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 

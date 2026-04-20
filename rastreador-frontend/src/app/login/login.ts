@@ -23,16 +23,18 @@ export class Login {
       password: this.password,
     };
 
-    this.http.post('http://localhost:9000/login/auth', dadosLogin, { responseType: 'text' }).subscribe({
-        next: (tokenDoJava) => {
-          sessionStorage.setItem('meu_token', tokenDoJava);
-          this.router.navigate(['/home']);
-        },
-        error: (erro) => {
-          console.error("Erro detalhado: ", erro);
-          alert("Falha no login!");
-        }
-    });
+    this.http.post<any>('http://localhost:9000/login/auth', dadosLogin).subscribe({
+            next: (resposta) => {
+              sessionStorage.setItem('meu_token', resposta.token);
+              sessionStorage.setItem('nomeUsuario', resposta.nome);
+
+              this.router.navigate(['/home']);
+            },
+            error: (erro) => {
+              console.error("Erro detalhado: ", erro);
+              alert("Falha no login!");
+            }
+        });
   }
 
 }

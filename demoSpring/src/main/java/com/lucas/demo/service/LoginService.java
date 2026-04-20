@@ -27,6 +27,11 @@ public class LoginService {
         return repository.save(user);
     }
 
+    public void deletarUsuario(LoginModel user){
+        long idUsuario = user.getId();
+        repository.deleteById(idUsuario);
+    }
+
     public TokenResponseDTO executarLogin(String email, String password) {
         LoginModel userFound = repository.findByEmail(email);
 
@@ -43,5 +48,7 @@ public class LoginService {
                 userFound.getNome()
         );
     }
-    
+
+
+
 }

@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+
+import { SidebarMenu } from '../sidebar-menu/sidebar-menu';
 
 interface Transaction {
   id: string;
@@ -19,16 +21,23 @@ interface CategorySummary {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, SidebarMenu],
   templateUrl: './homeComponent.html',
   styleUrl: './homeComponent.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+
+export class HomeComponent implements OnInit {
   menuAberto: boolean = false;
+
+  nomeUsuario = signal<string | null>('Carregando...');
+
+  ngOnInit(): void {
+    const nomeSalvo = sessionStorage.getItem('nomeUsuario');
+    this.nomeUsuario.set(nomeSalvo);
+  }
 
   toggleMenu() {
     this.menuAberto = !this.menuAberto;
   }
-
 }

@@ -20,6 +20,9 @@ public class LoginModel {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Permite ler a senha, mas nunca exibi-lá
     private String password;
 
+    private String categoriaUsuario;
+
+// getters
     public Long getId() {return id;}
 
     public String getNome() { return nome; }
@@ -27,6 +30,8 @@ public class LoginModel {
     public String getEmail() { return email; }
 
     public String getPassword() { return password; }
+
+    public String getCategoriaUsuario() { return categoriaUsuario; }
 
 //    Setters
     public void setEmail(String email) { this.email = email; }
@@ -36,4 +41,6 @@ public class LoginModel {
     public void setPassword(String password) { this.password = password; }
 
     public void setNome(String nome) { this.nome = nome; }
+
+    public void setCategoriaUsuario(String categoriaUsuario) { this.categoriaUsuario = categoriaUsuario; }
 }
