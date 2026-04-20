@@ -9,7 +9,10 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'home', component: HomeComponent },
+
   { path: 'categorias', component: Categorias },
   { path: 'categorias/cadastro', component: CadastroCategoria },
   { path: 'categorias/editar/:id', component: EditarCategoria },
+
+  { path: 'relatorios', component: relatorios },
 ];
