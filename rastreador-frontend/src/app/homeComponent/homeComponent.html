@@ -1,223 +1,221 @@
-<!DOCTYPE html>
-<html lang="pt-PT">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="app-layout">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
-<body>
+  <!-- SIDEBAR -->
+  <app-sidebar-menu></app-sidebar-menu>
 
-<app-sidebar-menu></app-sidebar-menu>
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
 
-<div class="dashboard-wrapper">
-
-  <!-- Main Content -->
-  <div class="main-content" id="mainContent">
-
-    <!-- Topbar -->
-    <header class="top-navbar">
-      <div class="d-flex align-items-center">
-        <!-- Botão Menu Mobile -->
-        <button class="btn btn-light d-md-none me-2" (click)="toggleMenu()">
-          <i class="bi bi-list fs-4"></i>
-        </button>
-        <h4 class="mb-0 fw-bold text-dark d-none d-md-block">Visão Geral</h4>
+    <!-- Cabeçalho de Navegação (Mês) -->
+    <header class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="fw-bold mb-0">Resumo de Despesas</h2>
+        <p class="text-muted mb-0 mt-1">Acompanhe o seu consumo de perto.</p>
       </div>
 
-      <div class="d-flex align-items-center gap-3">
-        <a routerLink="/configuracoes" class="btn btn-light rounded-circle position-relative p-2">
-          <i class="bi bi-bell fs-5 text-muted"></i>
-          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-              <span class="visually-hidden">Novos alertas</span>
-          </span>
-        </a>
-        <a routerLink="paginaUsuario" class="d-flex align-items-center gap-2" style="cursor: pointer;">
-          <div class="avatar-circle bg-primary bg-opacity-10 text-primary">
-            Lg
-          </div>
-          <div class="d-none d-md-block">
-            <p class="mb-0 fw-semibold text-dark fs-6" style="line-height: 1;">{{nomeUsuario()}}</p>
-            <small class="text-muted" style="font-size: 0.75rem;">Plano Grátis</small>
-          </div>
-        </a>
+      <!-- Seletor de Mês Típico de Gestores de Despesa -->
+      <div class="d-flex align-items-center bg-white border rounded-pill px-2 py-1 shadow-sm" style="border-color: var(--gray-border) !important;">
+        <button class="btn btn-sm btn-link text-muted text-decoration-none"><i class="bi bi-chevron-left"></i></button>
+        <span class="px-3 fw-semibold text-dark small">Abril 2026</span>
+        <button class="btn btn-sm btn-link text-muted text-decoration-none"><i class="bi bi-chevron-right"></i></button>
       </div>
     </header>
 
-    <!-- Dashboard Content -->
-    <div class="content-padding">
+    <!-- BANNER HERO: ORÇAMENTO GLOBAL -->
+    <div class="budget-banner mb-5">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <p class="text-uppercase fw-semibold mb-2" style="letter-spacing: 1px; font-size: 0.8rem; color: rgba(255,255,255,0.8);">Total Gasto este Mês</p>
+          <h1 class="text-huge mb-0">R$ 2.718<span style="font-size: 1.5rem; font-weight: 500; opacity: 0.8;">,00</span></h1>
 
-      <div class="mb-4">
-        <h2 class="fw-bold text-dark mb-1">Olá, {{nomeUsuario()}}! 👋</h2>
-        <p class="text-muted">Aqui está o resumo das suas finanças deste mês.</p>
-      </div>
+          <div class="progress-budget">
+            <!-- Progresso do orçamento: 54% -->
+            <div class="progress-budget-fill" style="width: 54%;"></div>
+          </div>
 
-      <!-- Resumo Financeiro (Cards) -->
-      <div class="row g-4 mb-4">
-        <!-- Card Saldo -->
-        <div class="col-12 col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <p class="text-muted mb-1 fw-medium">Saldo Atual</p>
-                <h3 class="fw-bold text-dark mb-0">R$ 5.432,00</h3>
-              </div>
-              <div class="icon-box bg-primary bg-opacity-10 text-primary">
-                <i class="bi bi-wallet2"></i>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2 text-success small fw-medium">
-              <i class="bi bi-arrow-up-right"></i>
-              <span>+2.5% desde o mês passado</span>
-            </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span class="small" style="color: rgba(255,255,255,0.8);">Restam <strong>R$ 2.282,00</strong></span>
+            <span class="small fw-semibold">Limite: R$ 5.000,00</span>
           </div>
         </div>
-
-        <!-- Card Receitas -->
-        <div class="col-12 col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <p class="text-muted mb-1 fw-medium">Receitas</p>
-                <h3 class="fw-bold text-dark mb-0">R$ 8.150,00</h3>
-              </div>
-              <div class="icon-box bg-success bg-opacity-10 text-success">
-                <i class="bi bi-graph-up-arrow"></i>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2 text-muted small">
-              <span>Previsto: R$ 8.500,00</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card Despesas -->
-        <div class="col-12 col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <p class="text-muted mb-1 fw-medium">Despesas</p>
-                <h3 class="fw-bold text-dark mb-0">R$ 2.718,00</h3>
-              </div>
-              <div class="icon-box bg-danger bg-opacity-10 text-danger">
-                <i class="bi bi-graph-down-arrow"></i>
-              </div>
-            </div>
-            <!-- Exemplo de barra de progresso para o orçamento -->
-            <div class="mt-2">
-              <div class="d-flex justify-content-between small text-muted mb-1">
-                <span>Orçamento mensal</span>
-                <span>54%</span>
-              </div>
-              <div class="progress" style="height: 6px;">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
+        <div class="col-md-4 text-md-end mt-4 mt-md-0">
+          <div class="bg-white bg-opacity-10 rounded-4 p-3 d-inline-block text-start border border-white border-opacity-10">
+            <p class="mb-1 small" style="color: rgba(255,255,255,0.8);"><i class="bi bi-calendar3"></i> Faltam 18 dias</p>
+            <p class="mb-0 fw-semibold">Gasto diário ideal: R$ 126</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="row g-4">
-        <!-- Últimas Transações -->
-        <div class="col-12 col-lg-8">
-          <div class="glass-card h-100">
-            <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
-              <h5 class="fw-bold mb-0">Últimas Transações</h5>
-              <a href="#" class="text-decoration-none small" style="color: #0072ff;">Ver todas</a>
+    <div class="row g-4">
+
+      <!-- COLUNA ESQUERDA: Ações e Lista de Gastos -->
+      <div class="col-xl-7 d-flex flex-column gap-4">
+
+        <!-- Formulário de Registo Rápido -->
+        <div class="card-clean">
+          <h5 class="fw-bold mb-4"><i class="bi bi-plus-circle text-primary me-2"></i>Registo Rápido</h5>
+          <form class="quick-add-form row g-3">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-muted mb-1">Valor do Gasto</label>
+              <div class="position-relative">
+                <span class="position-absolute top-50 translate-middle-y ms-3 text-muted">R$</span>
+                <input type="number" class="form-control ps-5" placeholder="0,00" required>
+              </div>
             </div>
-            <div class="p-0">
-              <!-- Angular *ngFor irá iterar aqui -->
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-muted mb-1">Categoria</label>
+              <select class="form-select">
+                <option>Alimentação</option>
+                <option>Transporte</option>
+                <option>Moradia</option>
+                <option>Lazer</option>
+                <option>Outros</option>
+              </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <a routerLink="/categorias/cadastro" type="button" class="btn-primary-custom">Registar</a>
+            </div>
+          </form>
+        </div>
 
-              <!-- Transação Exemplo 1 -->
-              <div class="transaction-item">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="icon-box bg-danger bg-opacity-10 text-danger rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                  <div>
-                    <p class="fw-semibold text-dark mb-0">Supermercado</p>
-                    <p class="text-muted small mb-0">Alimentação • Hoje, 14:30</p>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <p class="fw-bold text-dark mb-0">- R$ 350,00</p>
+        <!-- Lista de Despesas Recentes (Apenas Gastos) -->
+        <div class="card-clean flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">Últimos Gastos</h5>
+            <a href="#" class="text-decoration-none fw-medium small" style="color: var(--blue-main);">Ver Histórico</a>
+          </div>
+
+          <div>
+            <!-- Item -->
+            <div class="expense-item">
+              <div class="d-flex align-items-center gap-3">
+                <div class="expense-icon"><i class="bi bi-cart2"></i></div>
+                <div>
+                  <p class="fw-bold text-dark mb-0">Supermercado Continente</p>
+                  <p class="text-muted small mb-0">Hoje • Alimentação</p>
                 </div>
               </div>
+              <span class="fw-bold text-dark">R$ 350,00</span>
+            </div>
 
-              <!-- Transação Exemplo 2 -->
-              <div class="transaction-item">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
-                    <i class="bi bi-cash-stack"></i>
-                  </div>
-                  <div>
-                    <p class="fw-semibold text-dark mb-0">Salário</p>
-                    <p class="text-muted small mb-0">Rendimento • Ontem, 09:00</p>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <p class="fw-bold text-success mb-0">+ R$ 5.500,00</p>
+            <!-- Item -->
+            <div class="expense-item">
+              <div class="d-flex align-items-center gap-3">
+                <div class="expense-icon"><i class="bi bi-lightning-charge"></i></div>
+                <div>
+                  <p class="fw-bold text-dark mb-0">EDP Energia</p>
+                  <p class="text-muted small mb-0">Ontem • Moradia</p>
                 </div>
               </div>
+              <span class="fw-bold text-dark">R$ 120,50</span>
+            </div>
 
-              <!-- Transação Exemplo 3 -->
-              <div class="transaction-item">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 40px; height: 40px; font-size: 1.2rem;">
-                    <i class="bi bi-lightning"></i>
-                  </div>
-                  <div>
-                    <p class="fw-semibold text-dark mb-0">Conta de Luz</p>
-                    <p class="text-muted small mb-0">Contas Fixas • 12 de Abr</p>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <p class="fw-bold text-dark mb-0">- R$ 120,50</p>
+            <!-- Item -->
+            <div class="expense-item">
+              <div class="d-flex align-items-center gap-3">
+                <div class="expense-icon"><i class="bi bi-car-front"></i></div>
+                <div>
+                  <p class="fw-bold text-dark mb-0">Abastecimento Combustível</p>
+                  <p class="text-muted small mb-0">10 Abr • Transporte</p>
                 </div>
               </div>
+              <span class="fw-bold text-dark">R$ 250,00</span>
+            </div>
 
+            <!-- Item -->
+            <div class="expense-item">
+              <div class="d-flex align-items-center gap-3">
+                <div class="expense-icon"><i class="bi bi-cup-hot"></i></div>
+                <div>
+                  <p class="fw-bold text-dark mb-0">Cafetaria Central</p>
+                  <p class="text-muted small mb-0">08 Abr • Alimentação</p>
+                </div>
+              </div>
+              <span class="fw-bold text-dark">R$ 12,40</span>
             </div>
           </div>
         </div>
 
-        <!-- Ações Rápidas -->
-        <div class="col-12 col-lg-4">
-          <div class="glass-card p-4 h-100">
-            <h5 class="fw-bold mb-4">Ações Rápidas</h5>
+      </div>
 
-            <div class="d-grid gap-3">
-              <a routerLink="/categoria/cadastro" class="btn btn-primary-gradient py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm">
-                <i class="bi bi-plus-circle fs-5"></i>
-                <span class="text-decoration-none text-white">
-                  <span class="fw-semibold">Nova Despesa</span>
-                </span>
-              </a>
+      <!-- COLUNA DIREITA: Acompanhamento de Limites -->
+      <div class="col-xl-5">
+        <div class="card-clean">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">Limites por Categoria</h5>
+            <button class="btn btn-sm btn-light border"><i class="bi bi-pencil"></i> Editar</button>
+          </div>
 
-              <button class="btn btn-custom-action py-3 rounded-3 d-flex align-items-center justify-content-center gap-2">
-                <i class="bi bi-arrow-down-circle fs-5 text-success"></i>
-                <span>Nova Receita</span>
-              </button>
-
-              <!-- Botão para a tela que você já tem -->
-              <button class="btn btn-custom-action py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 mt-2">
-                <i class="bi bi-tags fs-5 text-secondary"></i>
-                <span>Gerir Categorias</span>
-              </button>
+          <!-- Categoria 1 -->
+          <div class="category-limit">
+            <div class="d-flex justify-content-between align-items-end mb-1">
+              <div>
+                <span class="fw-semibold text-dark d-block">Alimentação</span>
+                <span class="text-muted small">Restam R$ 250</span>
+              </div>
+              <span class="fw-bold text-dark small">R$ 750 / 1.000</span>
+            </div>
+            <div class="progress-slim">
+              <!-- 75% -> fill-high (perto do limite) -->
+              <div class="progress-slim-fill fill-high" style="width: 75%;"></div>
             </div>
           </div>
+
+          <!-- Categoria 2 -->
+          <div class="category-limit">
+            <div class="d-flex justify-content-between align-items-end mb-1">
+              <div>
+                <span class="fw-semibold text-dark d-block">Moradia</span>
+                <span class="text-muted small">Restam R$ 100</span>
+              </div>
+              <span class="fw-bold text-dark small">R$ 1.400 / 1.500</span>
+            </div>
+            <div class="progress-slim">
+              <!-- 93% -> fill-dark -->
+              <div class="progress-slim-fill fill-high" style="width: 93%;"></div>
+            </div>
+          </div>
+
+          <!-- Categoria 3 -->
+          <div class="category-limit">
+            <div class="d-flex justify-content-between align-items-end mb-1">
+              <div>
+                <span class="fw-semibold text-dark d-block">Transporte</span>
+                <span class="text-muted small">Restam R$ 200</span>
+              </div>
+              <span class="fw-bold text-dark small">R$ 300 / 500</span>
+            </div>
+            <div class="progress-slim">
+              <!-- 60% -> fill-medium -->
+              <div class="progress-slim-fill fill-medium" style="width: 60%;"></div>
+            </div>
+          </div>
+
+          <!-- Categoria 4 -->
+          <div class="category-limit">
+            <div class="d-flex justify-content-between align-items-end mb-1">
+              <div>
+                <span class="fw-semibold text-dark d-block">Lazer</span>
+                <span class="text-muted small">Restam R$ 382</span>
+              </div>
+              <span class="fw-bold text-dark small">R$ 268 / 650</span>
+            </div>
+            <div class="progress-slim">
+              <!-- 41% -> fill-low (seguro) -->
+              <div class="progress-slim-fill fill-low" style="width: 41%;"></div>
+            </div>
+          </div>
+
+          <!-- Alerta do Sistema -->
+          <div class="mt-5 p-3 rounded text-center" style="background-color: var(--blue-light); border: 1px dashed rgba(0, 82, 204, 0.3);">
+            <i class="bi bi-info-circle text-primary mb-2 fs-5"></i>
+            <p class="small text-dark mb-0 fw-medium">Tem 2 categorias a atingir o limite. Recomenda-se reduzir gastos em <strong>Alimentação</strong> esta semana.</p>
+          </div>
+
         </div>
       </div>
 
     </div>
-  </div>
+  </main>
 </div>
-
-<!-- Script simples para o toggle do menu mobile -->
-<script>
-  document.getElementById('sidebarToggle').addEventListener('click', function() {
-      document.getElementById('sidebar').classList.toggle('show');
-  });
-</script>
-</body>
-</html>

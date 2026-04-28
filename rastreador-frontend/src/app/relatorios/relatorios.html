@@ -1,1 +1,278 @@
-<p>relatorios works!</p>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spend Up - Relatórios</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Fontes modernas (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <app-sidebar-menu></app-sidebar-menu>
+
+  <!-- CONTEÚDO PRINCIPAL: RELATÓRIO -->
+  <main class="main-content">
+
+    <!-- HEADER DA PÁGINA -->
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <div>
+        <h2 class="fw-bold mb-0">Relatório de Gastos</h2>
+        <p class="text-muted mb-0 mt-1">Análise detalhada do seu consumo.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-custom rounded-pill px-3 py-2 d-flex align-items-center gap-2 small">
+          <i class="bi bi-funnel"></i> Filtrar
+        </button>
+        <button class="btn rounded-pill px-4 py-2 d-flex align-items-center gap-2 small fw-semibold" style="background-color: var(--blue-main); color: white; border: none;">
+          <i class="bi bi-download"></i> Exportar
+        </button>
+      </div>
+    </header>
+
+    <!-- NAVEGAÇÃO DE PERÍODO -->
+    <div class="mb-4 pb-2">
+      <div class="period-tabs shadow-sm">
+        <a href="#" class="period-tab active">Abril, 2026</a>
+        <a href="#" class="period-tab">Março, 2026</a>
+        <a href="#" class="period-tab">Fevereiro, 2026</a>
+        <a href="#" class="period-tab"><i class="bi bi-calendar3 ms-1 me-2"></i>Personalizado</a>
+      </div>
+    </div>
+
+    <!-- KPIs ANALÍTICOS -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="card-clean d-flex flex-column justify-content-center">
+          <p class="text-muted text-uppercase fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Gasto Total (Abril)</p>
+          <h3 class="fw-bold mb-0" style="color: var(--blue-dark);">R$ 2.718,00</h3>
+          <p class="mb-0 mt-2 small fw-medium" style="color: var(--text-muted);"><i class="bi bi-arrow-down fs-6 me-1" style="color: var(--blue-main);"></i> -12% vs Mês Passado</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-clean d-flex flex-column justify-content-center">
+          <p class="text-muted text-uppercase fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Média Diária</p>
+          <h3 class="fw-bold mb-0" style="color: var(--blue-dark);">R$ 90,60</h3>
+          <p class="mb-0 mt-2 small text-muted">Considerando 30 dias</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-clean d-flex flex-column justify-content-center">
+          <p class="text-muted text-uppercase fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Maior Categoria</p>
+          <h3 class="fw-bold mb-0" style="color: var(--blue-dark);">Alimentação</h3>
+          <p class="mb-0 mt-2 small text-muted">Representa 45% do total</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRÁFICO E TOP DESPESAS -->
+    <div class="row g-4 mb-4">
+
+      <!-- Gráfico de Evolução -->
+      <div class="col-xl-8">
+        <div class="card-clean">
+          <h5 class="fw-bold mb-1">Evolução do Gasto</h5>
+          <p class="text-muted small mb-4">Volume de despesas por semana no mês atual.</p>
+
+          <div class="bar-chart border-bottom border-light pb-2">
+            <div class="bar-wrapper">
+              <div class="bar" style="height: 40%;" title="R$ 550"></div>
+              <span class="bar-label">Sem 1</span>
+            </div>
+            <div class="bar-wrapper">
+              <div class="bar active" style="height: 85%;" title="R$ 1.200"></div>
+              <span class="bar-label fw-bold" style="color: var(--blue-main);">Sem 2</span>
+            </div>
+            <div class="bar-wrapper">
+              <div class="bar" style="height: 30%;" title="R$ 410"></div>
+              <span class="bar-label">Sem 3</span>
+            </div>
+            <div class="bar-wrapper">
+              <div class="bar" style="height: 60%;" title="R$ 820"></div>
+              <span class="bar-label">Sem 4</span>
+            </div>
+            <div class="bar-wrapper">
+              <div class="bar" style="height: 15%; background-color: var(--gray-border);" title="R$ 150 (Incompleto)"></div>
+              <span class="bar-label">Sem 5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Despesas do Mês -->
+      <div class="col-xl-4">
+        <div class="card-clean">
+          <h5 class="fw-bold mb-4">Maiores Transações</h5>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; background-color: var(--gray-bg); font-size: 0.75rem;">1</div>
+              <div>
+                <p class="mb-0 fw-semibold text-dark small">Aluguel / Renda</p>
+              </div>
+            </div>
+            <span class="fw-bold text-dark small">R$ 1.200,00</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; background-color: var(--gray-bg); font-size: 0.75rem;">2</div>
+              <div>
+                <p class="mb-0 fw-semibold text-dark small">Supermercado</p>
+              </div>
+            </div>
+            <span class="fw-bold text-dark small">R$ 450,00</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; background-color: var(--gray-bg); font-size: 0.75rem;">3</div>
+              <div>
+                <p class="mb-0 fw-semibold text-dark small">Oficina Mecânica</p>
+              </div>
+            </div>
+            <span class="fw-bold text-dark small">R$ 380,00</span>
+          </div>
+
+          <button class="btn btn-sm w-100 mt-2" style="background-color: var(--gray-bg); color: var(--blue-main); font-weight: 600;">Analisar Histórico</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETALHAMENTO: TABELA DE DESPESAS -->
+    <div class="card-clean p-0 overflow-hidden">
+      <div class="p-4 border-bottom d-flex justify-content-between align-items-center" style="border-color: var(--gray-border) !important;">
+        <h5 class="fw-bold mb-0">Detalhamento de Transações</h5>
+
+        <!-- Search dentro da tabela -->
+        <div class="input-group input-group-sm" style="width: 250px;">
+          <span class="input-group-text bg-white border-end-0" style="border-color: var(--gray-border);"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar despesa..." style="border-color: var(--gray-border); box-shadow: none;">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-report mb-0">
+          <thead style="background-color: var(--gray-bg);">
+          <tr>
+            <th style="width: 120px;">Data <i class="bi bi-arrow-down ms-1"></i></th>
+            <th>Descrição do Gasto</th>
+            <th>Categoria</th>
+            <th>Conta / Meio</th>
+            <th class="text-end">Valor (R$)</th>
+            <th style="width: 60px;"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Linha 1 -->
+          <tr>
+            <td class="fw-medium text-muted">14 Abr 2026</td>
+            <td>
+              <p class="fw-bold mb-0 text-dark small">Supermercado Continente</p>
+              <span class="text-muted" style="font-size: 0.7rem;">Compras semanais</span>
+            </td>
+            <td><span class="cat-badge"><i class="bi bi-cart2"></i> Alimentação</span></td>
+            <td><span class="small text-muted"><i class="bi bi-credit-card me-1"></i> Cartão Final 4092</span></td>
+            <td class="text-end fw-bold text-dark">R$ 350,00</td>
+            <td class="text-center">
+              <button class="btn btn-sm text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+            </td>
+          </tr>
+
+          <!-- Linha 2 -->
+          <tr>
+            <td class="fw-medium text-muted">12 Abr 2026</td>
+            <td>
+              <p class="fw-bold mb-0 text-dark small">EDP Energia</p>
+              <span class="text-muted" style="font-size: 0.7rem;">Fatura ref. Março</span>
+            </td>
+            <td><span class="cat-badge"><i class="bi bi-house"></i> Moradia</span></td>
+            <td><span class="small text-muted"><i class="bi bi-bank me-1"></i> Débito Direto</span></td>
+            <td class="text-end fw-bold text-dark">R$ 120,50</td>
+            <td class="text-center">
+              <button class="btn btn-sm text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+            </td>
+          </tr>
+
+          <!-- Linha 3 -->
+          <tr>
+            <td class="fw-medium text-muted">10 Abr 2026</td>
+            <td>
+              <p class="fw-bold mb-0 text-dark small">Abastecimento Galp</p>
+              <span class="text-muted" style="font-size: 0.7rem;">Gasolina 95</span>
+            </td>
+            <td><span class="cat-badge"><i class="bi bi-car-front"></i> Transporte</span></td>
+            <td><span class="small text-muted"><i class="bi bi-wallet2 me-1"></i> Dinheiro</span></td>
+            <td class="text-end fw-bold text-dark">R$ 250,00</td>
+            <td class="text-center">
+              <button class="btn btn-sm text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+            </td>
+          </tr>
+
+          <!-- Linha 4 -->
+          <tr>
+            <td class="fw-medium text-muted">08 Abr 2026</td>
+            <td>
+              <p class="fw-bold mb-0 text-dark small">Netflix</p>
+              <span class="text-muted" style="font-size: 0.7rem;">Assinatura Mensal</span>
+            </td>
+            <td><span class="cat-badge"><i class="bi bi-controller"></i> Lazer</span></td>
+            <td><span class="small text-muted"><i class="bi bi-credit-card me-1"></i> Cartão Final 4092</span></td>
+            <td class="text-end fw-bold text-dark">R$ 45,90</td>
+            <td class="text-center">
+              <button class="btn btn-sm text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+            </td>
+          </tr>
+
+          <!-- Linha 5 -->
+          <tr>
+            <td class="fw-medium text-muted">05 Abr 2026</td>
+            <td>
+              <p class="fw-bold mb-0 text-dark small">Farmácia Central</p>
+              <span class="text-muted" style="font-size: 0.7rem;">Medicamentos</span>
+            </td>
+            <td><span class="cat-badge"><i class="bi bi-heart-pulse"></i> Saúde</span></td>
+            <td><span class="small text-muted"><i class="bi bi-credit-card me-1"></i> Cartão Final 4092</span></td>
+            <td class="text-end fw-bold text-dark">R$ 85,20</td>
+            <td class="text-center">
+              <button class="btn btn-sm text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginação Padrão -->
+      <div class="p-4 d-flex justify-content-between align-items-center bg-white">
+        <p class="mb-0 text-muted small">A mostrar 5 de 42 despesas</p>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled"><a class="page-link text-muted border-0 bg-transparent" href="#">Anterior</a></li>
+            <li class="page-item active"><a class="page-link rounded-3 border-0" href="#" style="background-color: var(--blue-main);">1</a></li>
+            <li class="page-item"><a class="page-link text-dark border-0" href="#">2</a></li>
+            <li class="page-item"><a class="page-link text-dark border-0" href="#">3</a></li>
+            <li class="page-item"><a class="page-link text-dark border-0" href="#">Próximo</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Fim do conteúdo com espaçamento base -->
+    <div class="pb-5"></div>
+
+  </main>
+</div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

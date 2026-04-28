@@ -26,16 +26,16 @@
 
     <a routerLink="/relatorios" class="nav-link-custom">
       <i class="bi bi-file-earmark-text-fill"></i>
-      Relatõrios
+      Relatórios
     </a>
   </div>
 
   <div class="mt-auto mb-4">
-    <a href="/configuracoes" class="nav-link-custom text-white-50 hover-white mt-1">
+    <a routerLink="/configuracoes" class="nav-link-custom text-white-50 hover-white mt-1">
       <i class="bi bi-gear-wide-connected"></i>
       Configurações
     </a>
-    <a href="/logout" class="nav-link-custom text-white-50 hover-white mt-1">
+    <a (click)="logout()" class="nav-link-custom text-white-50 hover-white mt-1" style="cursor: pointer;">
       <i class="bi bi-box-arrow-right"></i>
       Terminar Sessão
     </a>

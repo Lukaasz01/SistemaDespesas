@@ -1,0 +1,209 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--gray-bg);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* --- LAYOUT PRINCIPAL --- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+
+    --blue-dark: #0f172a;
+    --blue-main: #0052cc;
+    --blue-hover: #0043a8;
+    --blue-light: #e6f0ff;
+    --gray-bg: #f8fafc;
+    --gray-border: #e2e8f0;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid var(--gray-border);
+    height: 100vh;
+    position: fixed;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--blue-main);
+    margin-bottom: 3rem;
+    padding-left: 0.5rem;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
+}
+.nav-link-custom:hover {
+    color: var(--blue-main);
+    background-color: var(--gray-bg);
+}
+.nav-link-custom.active {
+    color: var(--blue-main);
+    background-color: var(--blue-light);
+    font-weight: 600;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.main-content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2.5rem 3rem;
+    max-width: 1400px;
+}
+
+/* --- COMPONENTES DA PÁGINA DE RELATÓRIO --- */
+
+/* Cartões Brancos Gerais */
+.card-clean {
+    background-color: #ffffff;
+    border: 1px solid var(--gray-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    height: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Abas de Período */
+.period-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background-color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--gray-border);
+    display: inline-flex;
+}
+.period-tab {
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.period-tab:hover {
+    background-color: var(--gray-bg);
+    color: var(--text-dark);
+}
+.period-tab.active {
+    background-color: var(--blue-light);
+    color: var(--blue-main);
+}
+
+/* Botões de Ação Secundária */
+.btn-outline-custom {
+    border: 1px solid var(--gray-border);
+    background-color: #ffffff;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.btn-outline-custom:hover {
+    border-color: var(--blue-main);
+    color: var(--blue-main);
+    background-color: var(--gray-bg);
+}
+
+/* Gráfico de Barras (CSS Only - Tons de Azul) */
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 160px;
+    padding-top: 1rem;
+    gap: 1rem;
+}
+.bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    gap: 0.5rem;
+    position: relative;
+}
+.bar {
+    width: 100%;
+    max-width: 32px;
+    background-color: var(--blue-light);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+.bar:hover, .bar.active {
+    background-color: var(--blue-main);
+}
+.bar-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Tabela de Relatório */
+.table-report th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--gray-border);
+    padding: 1rem;
+}
+.table-report td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--gray-bg);
+}
+.table-report tr:last-child td {
+    border-bottom: none;
+}
+.table-report tbody tr {
+    transition: background-color 0.2s;
+}
+.table-report tbody tr:hover {
+    background-color: var(--gray-bg);
+}
+
+/* Badge de Categoria em Tons de Azul */
+.cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: var(--blue-light);
+    color: var(--blue-main);
+    border: 1px solid rgba(0, 82, 204, 0.1);
+}
+
+/* Responsivo */
+@media (max-width: 991px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+    .period-tabs { overflow-x: auto; white-space: nowrap; max-width: 100%; }
+}

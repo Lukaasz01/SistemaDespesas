@@ -1,166 +1,218 @@
-.dashboard-wrapper {
-    background-color: #f4f7f6;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+/* --- LAYOUT PRINCIPAL (Substituindo o :root e o body) --- */
+.app-layout {
+    /* 1. Variáveis de Cor */
+    --blue-dark: #0f172a;
+    --blue-main: #2a5298;
+    --blue-hover: #1e3c72;
+    --blue-light: #e6f0ff;
+    --gray-bg: #f8fafc;
+    --gray-border: #e2e8f0;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+
+    /* 2. Estilos Gerais (Antes no body) */
+    font-family: 'Inter', sans-serif;
+    background-color: var(--gray-bg);
+    color: var(--text-dark);
     overflow-x: hidden;
+
+    /* 3. Comportamento do Layout original */
+    display: flex;
     min-height: 100vh;
 }
 
-/* --- Sidebar --- */
+/* SIDEBAR (Branca e Limpa) */
 .sidebar {
     width: 260px;
-    /* Aplicado o gradiente diretamente para não falhar no Angular */
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    min-height: 100vh;
-    color: white;
-    transition: all 0.3s;
+    background-color: #ffffff;
+    border-right: 1px solid var(--gray-border);
+    height: 100vh;
     position: fixed;
-    z-index: 1000;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
 }
 
-.sidebar-brand {
-    padding: 1.5rem;
+.logo-area {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 0.75rem;
+    color: var(--blue-main);
+    margin-bottom: 3rem;
+    padding-left: 0.5rem;
 }
 
 .nav-link-custom {
-    color: rgba(255, 255, 255, 0.7);
-    padding: 0.8rem 1.5rem;
-    border-radius: 0.5rem;
-    margin: 0.2rem 1rem;
     display: flex;
     align-items: center;
-    gap: 12px;
-    transition: all 0.2s;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-muted);
     text-decoration: none;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
 }
-
 .nav-link-custom:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--blue-main);
+    background-color: var(--gray-bg);
 }
-
 .nav-link-custom.active {
-    color: white;
-    background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+    color: var(--blue-main);
+    background-color: var(--blue-light);
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
 }
 
-/* --- Main Content --- */
+/* CONTEÚDO PRINCIPAL */
 .main-content {
+    flex: 1;
     margin-left: 260px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s;
+    padding: 2.5rem 3rem;
+    max-width: 1400px;
 }
 
-.top-navbar {
-    background: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/* --- COMPONENTES --- */
 
-.content-padding {
-    padding: 2rem;
-}
-
-/* --- Cards --- */
-.glass-card {
-    background: white;
-    border-radius: 1rem;
-    border: none;
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.03);
-    transition: transform 0.2s;
+/* Banner de Orçamento (Hero) */
+.budget-banner {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 82, 204, 0.15);
+    position: relative;
     overflow: hidden;
 }
 
-.glass-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.06);
+/* Padrão decorativo subtil no banner */
+.budget-banner::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
-.icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 0.75rem;
+.progress-budget {
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    overflow: hidden;
+}
+.progress-budget-fill {
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 6px;
+    transition: width 1s ease-in-out;
+}
+
+/* Cartões Brancos Gerais */
+.card-clean {
+    background-color: #ffffff;
+    border: 1px solid var(--gray-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    height: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Limites por Categoria */
+.category-limit {
+    margin-bottom: 1.5rem;
+}
+.category-limit:last-child {
+    margin-bottom: 0;
+}
+
+.progress-slim {
+    height: 6px;
+    background-color: var(--gray-bg);
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+.progress-slim-fill {
+    height: 100%;
+    background-color: var(--blue-main);
+    border-radius: 3px;
+}
+/* Variação de tons de azul para o progresso */
+.fill-high { background-color: var(--blue-main); }
+.fill-medium { background-color: var(--blue-main); }
+.fill-low { background-color: #60a5fa; }
+
+/* Lista de Despesas (Sem verde/vermelho, focada no registo) */
+.expense-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-/* Botões de Ação */
-.btn-custom-action {
-    background: white;
-    border: 1px dashed #ced4da;
-    color: #495057;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.btn-custom-action:hover {
-    background: #f8f9fa;
-    border-color: #0072ff;
-    color: #0072ff;
-}
-
-.btn-primary-gradient {
-    background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
-    color: white;
-    border: none;
-    transition: all 0.2s;
-}
-
-.btn-primary-gradient:hover {
-    opacity: 0.9;
-    color: white;
-}
-
-/* Transaction List */
-.transaction-item {
-    padding: 1rem;
-    border-bottom: 1px solid #f1f3f5;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--gray-border);
 }
-.transaction-item:last-child {
+.expense-item:last-child {
     border-bottom: none;
+    padding-bottom: 0;
 }
-
-.avatar-circle {
+.expense-icon {
     width: 40px;
     height: 40px;
-    background-color: #e9ecef;
-    border-radius: 50%;
+    background-color: var(--gray-bg);
+    color: var(--text-muted);
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    color: #495057;
+    font-size: 1.2rem;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    .sidebar.show {
-        transform: translateX(0);
-    }
-    .main-content {
-        margin-left: 0;
-    }
-    .content-padding {
-        padding: 1rem;
-    }
+/* Formulário de Registo Rápido */
+.quick-add-form input, .quick-add-form select {
+    background-color: var(--gray-bg);
+    border: 1px solid var(--gray-border);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    width: 100%;
+    transition: border-color 0.2s;
+}
+.quick-add-form input:focus, .quick-add-form select:focus {
+    outline: none;
+    border-color: var(--blue-main);
+    background-color: #ffffff;
+}
+
+.btn-primary-custom {
+    background-color: var(--blue-main);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+.btn-primary-custom:hover {
+    background-color: var(--blue-hover);
+}
+
+/* Tipografia */
+.text-huge {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+/* Responsivo */
+@media (max-width: 991px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; padding: 1.5rem; }
 }
