@@ -19,6 +19,8 @@
 
 	<properties>
 		<java.version>21</java.version>
+		<!-- ESSA LINHA CORRIGE O ERRO MALFORMEDINPUTEXCEPTION NO WINDOWS -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -49,6 +51,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>4.4.0</version>
@@ -63,9 +70,58 @@
 
 	<build>
 		<plugins>
+			<!-- Plugin do Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Novo plugin para gerenciar o Node.js e Angular -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.15.1</version>
+
+				<!-- DIRECIONA O MAVEN PARA A PASTA DO ANGULAR -->
+				<configuration>
+					<workingDirectory>../rastreador-frontend</workingDirectory>
+				</configuration>
+
+				<executions>
+					<!-- PASSO 1: Baixar e instalar o Node v22 e NPM localmente -->
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v22.12.0</nodeVersion>
+							<npmVersion>10.9.0</npmVersion>
+						</configuration>
+					</execution>
+
+					<!-- PASSO 2: Executar "npm install" -->
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+
+					<!-- PASSO 3: Executar a Build de produção do Angular -->
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

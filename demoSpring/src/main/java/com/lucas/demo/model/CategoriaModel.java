@@ -1,6 +1,8 @@
 package com.lucas.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class CategoriaModel {
@@ -9,8 +11,11 @@ public class CategoriaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome da categoria e obrigatorio.")
     private String categoria;
     private String descricao;
+
+    @PositiveOrZero(message = "O valor da categoria nao pode ser negativo.")
     private Long valor;
 
     @ManyToOne

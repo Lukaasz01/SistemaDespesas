@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import { CategoriasService } from '../categorias.service';
 
 type TipoDespesa = 'fixa' | 'variavel' | 'essencial' | 'lazer';
 
@@ -20,6 +22,10 @@ type Categoria = {
   styleUrl: './cadastroCategoria.css',
 })
 export class CadastroCategoria {
+  private readonly categoriasService = inject(CategoriasService);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   menuAberto = false;
   nome = '';
   tipoDespesa: TipoDespesa = 'fixa';
@@ -29,6 +35,7 @@ export class CadastroCategoria {
 
   mensagem = '';
   erro = '';
+  salvando = false;
   categoriasCriadas: Categoria[] = [];
 
   readonly opcoesIcones = [
@@ -99,6 +106,10 @@ export class CadastroCategoria {
   }
 
   salvarCategoria() {
+    if (this.salvando) {
+      return;
+    }
+
     this.mensagem = '';
     this.erro = '';
 
@@ -121,11 +132,29 @@ export class CadastroCategoria {
       cor: this.corSelecionada,
     };
 
-    this.categoriasCriadas.unshift(novaCategoria);
-    this.mensagem = 'Categoria cadastrada com sucesso.';
-    this.limparFormulario();
-
-    // Proximo passo: trocar esta persistencia local por chamada ao endpoint do Spring.
+    this.salvando = true;
+    this.categoriasService.criarCategoria({
+      categoria: nomeLimpo,
+      descricao: this.tipoPreview,
+      valor: this.orcamentoMensal,
+    }).subscribe({
+      next: () => {
+        this.categoriasCriadas.unshift(novaCategoria);
+        this.mensagem = 'Categoria cadastrada com sucesso.';
+        this.limparFormulario();
+        void this.router.navigate(['/categorias']);
+      },
+      error: (erro) => {
+        console.error('Erro ao cadastrar categoria:', erro);
+        this.erro = erro?.error?.erro || 'Nao foi possivel cadastrar a categoria.';
+        this.salvando = false;
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.salvando = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   private limparFormulario() {

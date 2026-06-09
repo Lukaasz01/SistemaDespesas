@@ -42,6 +42,15 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+.nav-link-button {
+    width: calc(100% - 2rem);
+    text-align: left;
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
 .nav-link-custom.active {
     color: white;
     background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);

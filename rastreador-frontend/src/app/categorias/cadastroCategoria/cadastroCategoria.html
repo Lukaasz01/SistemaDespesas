@@ -136,8 +136,8 @@
               </div>
 
               <div class="d-flex gap-3 mt-4">
-                <button type="submit" class="btn btn-primary-gradient px-5 py-3 rounded-3 flex-grow-1 flex-md-grow-0">
-                  Criar Categoria
+                <button type="submit" class="btn btn-primary-gradient px-5 py-3 rounded-3 flex-grow-1 flex-md-grow-0" [disabled]="salvando">
+                  {{ salvando ? 'A guardar...' : 'Criar Categoria' }}
                 </button>
                 <a routerLink="/categorias" class="btn btn-light px-4 py-3 rounded-3 text-muted border">Cancelar</a>
               </div>

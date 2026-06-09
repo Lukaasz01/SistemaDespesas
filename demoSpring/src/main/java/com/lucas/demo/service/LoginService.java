@@ -49,6 +49,10 @@ public class LoginService {
         );
     }
 
+    public void deslogar(String token) {
+        tokenService.revogarToken(token);
+    }
+
 
 
 }

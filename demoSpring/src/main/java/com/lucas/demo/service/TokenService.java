@@ -5,24 +5,27 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.lucas.demo.model.LoginModel;
 import org.springframework.stereotype.Service;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenService {
-    private String secret = "minha-senha-secreta-muito-forte";
+    private final String secret = "minha-senha-secreta-muito-forte";
+    private final Set<String> tokensRevogados = ConcurrentHashMap.newKeySet();
 
     public String gerarToken(LoginModel usuario) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(secret);
 
             return JWT.create()
-                    .withIssuer("rastreador-despesas-api") // Quem está emitindo o crachá
-                    .withSubject(usuario.getId().toString()) // A informação principal que queremos guardar: O ID do usuário!
-                    .withExpiresAt(gerarDataExpiracao()) // Data de validade do crachá
-                    .sign(algoritmo); // Carimba e assina
-
+                    .withIssuer("rastreador-despesas-api")
+                    .withSubject(usuario.getId().toString())
+                    .withExpiresAt(gerarDataExpiracao())
+                    .sign(algoritmo);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Erro ao gerar o token JWT", exception);
         }
@@ -30,18 +33,27 @@ public class TokenService {
 
     public String validarToken(String token) {
         try {
+            if (tokensRevogados.contains(token)) {
+                return null;
+            }
+
             Algorithm algoritmo = Algorithm.HMAC256(secret);
-            return JWT.require(algoritmo).withIssuer("rastreador-despesas-api")
+            return JWT.require(algoritmo)
+                    .withIssuer("rastreador-despesas-api")
                     .build()
                     .verify(token)
-                    .getSubject(); // retorna o ID do usuário, ou lança exceção se inválido
+                    .getSubject();
         } catch (Exception e) {
-            return null; // Token inválido ou expirado
+            return null;
         }
-
     }
 
-    // Função auxiliar que diz que o crachá vale por 2 horas a partir de agora
+    public void revogarToken(String token) {
+        if (token != null && !token.isBlank()) {
+            tokensRevogados.add(token);
+        }
+    }
+
     private Instant gerarDataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }

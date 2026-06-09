@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { SidebarMenu } from '../sidebar-menu/sidebar-menu';
 
 @Component({
   selector: 'app-financas',
-  imports: [],
+  imports: [SidebarMenu],
   templateUrl: './financas.html',
   styleUrl: './financas.css',
 })

@@ -11,7 +11,11 @@ import com.lucas.demo.model.LoginModel;
 import com.lucas.demo.service.LoginService;
 import com.lucas.demo.dto.TokenResponseDTO;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(originPatterns = {
+        "http://localhost:*",
+        "http://127.0.0.1:*",
+        "http://[::1]:*"
+})
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -37,6 +41,16 @@ public class LoginController {
     public ResponseEntity<TokenResponseDTO> fazerLogin(@RequestBody LoginModel loginData) {
         TokenResponseDTO resposta = service.executarLogin(loginData.getEmail(), loginData.getPassword());
         return ResponseEntity.ok(resposta);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(value = "Authorization", required = false) String authorization) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+            service.deslogar(token);
+        }
+
+        return ResponseEntity.noContent().build();
     }
 
 }

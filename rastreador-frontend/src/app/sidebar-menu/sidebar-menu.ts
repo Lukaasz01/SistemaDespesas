@@ -1,23 +1,38 @@
-import { Component, inject } from '@angular/core'; // Adicionamos o 'inject' aqui
-import { RouterLink, Router } from '@angular/router'; // Adicionamos o 'Router' aqui
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
+import { clearAuthSession } from '../core/auth-session';
 
 @Component({
   selector: 'app-sidebar-menu',
   standalone: true,
-  imports: [RouterLink], // Removemos o SidebarMenu daqui
+  imports: [RouterLink],
   templateUrl: './sidebar-menu.html',
   styleUrl: './sidebar-menu.css',
 })
 export class SidebarMenu {
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
-  // Injetando o Router para permitir a navegação
-  private router = inject(Router);
+  deslogando = false;
 
-  logout() {
-      sessionStorage.removeItem('meu_token');
-      sessionStorage.removeItem('nomeUsuario');
+  logout(): void {
+    if (this.deslogando) {
+      return;
+    }
 
-      this.router.navigate(['/login']); // Agora isso vai funcionar perfeitamente!
+    this.deslogando = true;
+
+    this.http.post<void>('http://localhost:9000/login/logout', {}).subscribe({
+      next: () => this.finalizarLogout(),
+      error: () => this.finalizarLogout(),
+    });
   }
 
+  private finalizarLogout(): void {
+    clearAuthSession();
+    this.deslogando = false;
+    void this.router.navigate(['/login']);
+  }
 }
