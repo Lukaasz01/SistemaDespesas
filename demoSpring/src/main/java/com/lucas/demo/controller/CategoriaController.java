@@ -30,6 +30,16 @@ public class CategoriaController {
         return service.salvar(categoria);
     }
 
+    @GetMapping("/{id}")
+    public CategoriaResponseDTO buscarCategoria(@PathVariable Long id) {
+        return service.buscarPorIdDoUsuarioLogado(id);
+    }
+
+    @PutMapping("/{id}")
+    public CategoriaResponseDTO atualizarCategoria(@PathVariable Long id, @Valid @RequestBody CategoriaModel categoria) {
+        return service.atualizar(id, categoria);
+    }
+
     @DeleteMapping("/{id}")
     public void deletCategoria(@PathVariable Long id) {
         repository.deleteById(id);

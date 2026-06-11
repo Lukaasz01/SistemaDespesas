@@ -33,4 +33,11 @@ public class GlobalExceptionHandler {
         resposta.put("erro", mensagem);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFound(EntityNotFoundException ex) {
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("erro", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+    }
 }

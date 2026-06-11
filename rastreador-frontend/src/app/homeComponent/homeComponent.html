@@ -76,8 +76,8 @@
               </a>
             </div>
 
-            <div class="alert alert-light border mb-0">
-              Use o fluxo de despesas para registrar valores reais. Aqui você vê o consolidado atualizado automaticamente.
+            <div class="d-flex justify-content-center alert alert-light border mb-0">
+              <p class="fw-semibold">Sem movimentação de despesas até o momento.</p>
             </div>
           </div>
 
@@ -115,9 +115,9 @@
           <div class="card-clean">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h5 class="fw-bold mb-0">Limites por Categoria</h5>
-              <span class="btn btn-sm btn-light border" role="button" aria-disabled="true">
+              <a routerLink="/categorias" class="btn btn-sm btn-light border" role="button" aria-disabled="true">
                 <i class="bi bi-pencil"></i> Editar
-              </span>
+              </a>
             </div>
 
             <div *ngIf="categoriasResumo().length; else semCategorias">
@@ -125,7 +125,9 @@
                 <div class="d-flex justify-content-between align-items-end mb-1">
                   <div>
                     <span class="fw-semibold text-dark d-block">{{ categoria.nome }}</span>
-                    <span class="text-muted small">Restam {{ formatarMoeda(categoria.restante) }}</span>
+                    <span class="text-muted small">
+                      {{ categoria.quantidade }} cadastro(s) • {{ categoria.lancamentos }} lançamento(s) • Restam {{ formatarMoeda(categoria.restante) }}
+                    </span>
                   </div>
                   <span class="fw-bold text-dark small">{{ formatarMoeda(categoria.gasto) }} / {{ formatarMoeda(categoria.orcamento) }}</span>
                 </div>

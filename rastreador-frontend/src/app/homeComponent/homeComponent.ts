@@ -27,6 +27,8 @@ interface CategoriaResumo {
   nome: string;
   descricao: string;
   orcamento: number;
+  quantidade: number;
+  lancamentos: number;
   gasto: number;
   restante: number;
   percentual: number;
@@ -145,27 +147,29 @@ export class HomeComponent implements OnInit {
   private atualizarDashboard(): void {
     const referencia = this.periodoSelecionado();
     const despesasDoPeriodo = this.despesasBase.filter((despesa) => this.ehDoPeriodo(despesa.data, referencia));
+    const categoriasAgrupadas = this.agruparCategorias(this.categoriasBase);
 
-    const categoriasResumo = this.categoriasBase
+    const categoriasResumo = categoriasAgrupadas
       .map((categoria, indice) => {
-        const nome = this.removerTextoVazio(categoria.categoria, 'Categoria sem nome');
-        const orcamento = this.comoNumero(categoria.valor);
         const gasto = despesasDoPeriodo
-          .filter((despesa) => this.normalizarTexto(despesa.categoria) === this.normalizarTexto(nome))
+          .filter((despesa) => this.normalizarTexto(despesa.categoria) === this.normalizarTexto(categoria.nome))
           .reduce((total, despesa) => total + this.comoNumero(despesa.valor), 0);
-        const restante = Math.max(0, orcamento - gasto);
-        const percentual = orcamento > 0 ? Math.min(100, (gasto / orcamento) * 100) : 0;
+        const lancamentos = despesasDoPeriodo.filter((despesa) => this.normalizarTexto(despesa.categoria) === this.normalizarTexto(categoria.nome)).length;
+        const restante = Math.max(0, categoria.orcamento - gasto);
+        const percentual = categoria.orcamento > 0 ? Math.min(100, (gasto / categoria.orcamento) * 100) : 0;
 
         return {
           id: categoria.id,
-          nome,
-          descricao: this.removerTextoVazio(categoria.descricao, 'Sem descrição cadastrada'),
-          orcamento,
+          nome: categoria.nome,
+          descricao: categoria.descricao,
+          orcamento: categoria.orcamento,
+          quantidade: categoria.quantidade,
+          lancamentos,
           gasto,
           restante,
           percentual,
           cor: this.obterCorCategoria(indice),
-          icone: this.obterIconeCategoria(nome),
+          icone: this.obterIconeCategoria(categoria.nome),
         };
       })
       .sort((a, b) => b.percentual - a.percentual);
@@ -206,6 +210,49 @@ export class HomeComponent implements OnInit {
     const proximo = new Date(atual.getFullYear(), atual.getMonth() + delta, 1);
     this.periodoSelecionado.set(proximo);
     this.atualizarDashboard();
+  }
+
+  private agruparCategorias(categorias: CategoriaApi[]): Array<{
+    id: number;
+    nome: string;
+    descricao: string;
+    orcamento: number;
+    quantidade: number;
+  }> {
+    const grupos = new Map<string, {
+      id: number;
+      nome: string;
+      descricao: string;
+      orcamento: number;
+      quantidade: number;
+    }>();
+
+    categorias.forEach((categoria) => {
+      const nome = this.removerTextoVazio(categoria.categoria, 'Categoria sem nome');
+      const chave = this.normalizarTexto(nome);
+      const existente = grupos.get(chave);
+      const descricao = this.removerTextoVazio(categoria.descricao, 'Sem descrição cadastrada');
+      const orcamento = this.comoNumero(categoria.valor);
+
+      if (existente) {
+        existente.orcamento += orcamento;
+        existente.quantidade += 1;
+        if (existente.descricao === 'Sem descrição cadastrada' && descricao !== 'Sem descrição cadastrada') {
+          existente.descricao = descricao;
+        }
+        return;
+      }
+
+      grupos.set(chave, {
+        id: categoria.id,
+        nome,
+        descricao,
+        orcamento,
+        quantidade: 1,
+      });
+    });
+
+    return Array.from(grupos.values());
   }
 
   private comoNumero(valor: number | string | null): number {

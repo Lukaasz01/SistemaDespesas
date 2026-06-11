@@ -1,42 +1,52 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { SidebarMenu } from '../../sidebar-menu/sidebar-menu';
 import { CategoriasService } from '../categorias.service';
 
-type TipoDespesa = 'fixa' | 'variavel' | 'essencial' | 'lazer';
-
-type Categoria = {
+type CategoriaCriada = {
   nome: string;
-  tipoDespesa: TipoDespesa;
+  descricao: string;
   orcamentoMensal: number | null;
   icone: string;
   cor: string;
 };
 
+const naoEspacosValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const valor = typeof control.value === 'string' ? control.value.trim() : '';
+  return valor.length > 0 ? null : { whitespace: true };
+};
+
 @Component({
   selector: 'app-cadastro-categoria',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, SidebarMenu],
   templateUrl: './cadastroCategoria.html',
   styleUrl: './cadastroCategoria.css',
 })
 export class CadastroCategoria {
+  private readonly fb = inject(FormBuilder);
   private readonly categoriasService = inject(CategoriasService);
   private readonly router = inject(Router);
-  private readonly cdr = inject(ChangeDetectorRef);
 
+  nomeUsuario = sessionStorage.getItem('nomeUsuario') ?? 'Usuario';
+  salvando = false;
+  mensagem = '';
+  erro = '';
   menuAberto = false;
-  nome = '';
-  tipoDespesa: TipoDespesa = 'fixa';
-  orcamentoMensal: number | null = null;
+
   iconeSelecionado = 'bi-cart3';
   corSelecionada = '#0072ff';
 
-  mensagem = '';
-  erro = '';
-  salvando = false;
-  categoriasCriadas: Categoria[] = [];
+  categoriasCriadas: CategoriaCriada[] = [];
 
   readonly opcoesIcones = [
     'bi-cart3',
@@ -64,48 +74,60 @@ export class CadastroCategoria {
     '#e83e8c',
   ];
 
-  toggleSidebar() {
+  readonly categoriaForm = this.fb.group({
+    categoria: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(60), naoEspacosValidator]],
+    descricao: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(120), naoEspacosValidator]],
+    valor: [null as number | null, [Validators.required, Validators.min(0), Validators.max(999999999)]],
+  });
+
+  get categoriaControl(): AbstractControl {
+    return this.categoriaForm.controls.categoria;
+  }
+
+  get descricaoControl(): AbstractControl {
+    return this.categoriaForm.controls.descricao;
+  }
+
+  get valorControl(): AbstractControl {
+    return this.categoriaForm.controls.valor;
+  }
+
+  get tituloPreview(): string {
+    return this.textoLimpo(this.categoriaControl.value) || 'Nova Categoria';
+  }
+
+  get descricaoPreview(): string {
+    return this.textoLimpo(this.descricaoControl.value) || 'Sem descricao cadastrada';
+  }
+
+  get corPreviewSuave(): string {
+    return this.hexToRgba(this.corSelecionada, 0.1);
+  }
+
+  toggleSidebar(): void {
     this.menuAberto = !this.menuAberto;
   }
 
-  selecionarIcone(icone: string) {
+  selecionarIcone(icone: string): void {
     this.iconeSelecionado = icone;
   }
 
-  selecionarCor(cor: string) {
+  selecionarCor(cor: string): void {
     this.corSelecionada = cor;
   }
 
-  get tituloPreview() {
-    return this.nome.trim() || 'Nova Categoria';
-  }
-
-  get tipoPreview() {
-    const tipos: Record<TipoDespesa, string> = {
-      fixa: 'Despesa Fixa',
-      variavel: 'Despesa Variavel',
-      essencial: 'Essencial',
-      lazer: 'Lazer / Estilo de Vida',
-    };
-    return tipos[this.tipoDespesa];
-  }
-
-  get corPreviewSuave() {
-    return this.corSuave(this.corSelecionada);
-  }
-
-  corSuave(cor: string) {
-    return this.hexToRgba(cor, 0.1);
-  }
-
-  formatarMoeda(valor: number | null) {
+  formatarMoeda(valor: number | null): string {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     }).format(valor ?? 0);
   }
 
-  salvarCategoria() {
+  corSuave(cor: string): string {
+    return this.hexToRgba(cor, 0.1);
+  }
+
+  salvarCategoria(): void {
     if (this.salvando) {
       return;
     }
@@ -113,59 +135,114 @@ export class CadastroCategoria {
     this.mensagem = '';
     this.erro = '';
 
-    const nomeLimpo = this.nome.trim();
-    if (!nomeLimpo) {
-      this.erro = 'Informe o nome da categoria.';
+    if (this.categoriaForm.invalid) {
+      this.categoriaForm.markAllAsTouched();
+      this.erro = 'Corrija os campos destacados antes de salvar.';
       return;
     }
 
-    if (this.orcamentoMensal !== null && this.orcamentoMensal < 0) {
-      this.erro = 'O orcamento mensal nao pode ser negativo.';
+    const categoria = this.textoLimpo(this.categoriaControl.value);
+    const descricao = this.textoLimpo(this.descricaoControl.value);
+    const valor = this.normalizarValorMonetario(this.valorControl.value);
+
+    if (!categoria || !descricao || valor === null) {
+      this.erro = 'Preencha nome, descricao e valor da categoria.';
       return;
     }
-
-    const novaCategoria: Categoria = {
-      nome: nomeLimpo,
-      tipoDespesa: this.tipoDespesa,
-      orcamentoMensal: this.orcamentoMensal,
-      icone: this.iconeSelecionado,
-      cor: this.corSelecionada,
-    };
 
     this.salvando = true;
+
     this.categoriasService.criarCategoria({
-      categoria: nomeLimpo,
-      descricao: this.tipoPreview,
-      valor: this.orcamentoMensal,
+      categoria,
+      descricao,
+      valor,
     }).subscribe({
       next: () => {
-        this.categoriasCriadas.unshift(novaCategoria);
+        this.categoriasCriadas.unshift({
+          nome: categoria,
+          descricao,
+          orcamentoMensal: valor,
+          icone: this.iconeSelecionado,
+          cor: this.corSelecionada,
+        });
         this.mensagem = 'Categoria cadastrada com sucesso.';
-        this.limparFormulario();
+        this.categoriaForm.reset({
+          categoria: '',
+          descricao: '',
+          valor: null,
+        });
+        this.iconeSelecionado = 'bi-cart3';
+        this.corSelecionada = '#0072ff';
         void this.router.navigate(['/categorias']);
       },
-      error: (erro) => {
+      error: (erro: { error?: { erro?: string } }) => {
         console.error('Erro ao cadastrar categoria:', erro);
         this.erro = erro?.error?.erro || 'Nao foi possivel cadastrar a categoria.';
         this.salvando = false;
-        this.cdr.detectChanges();
       },
       complete: () => {
         this.salvando = false;
-        this.cdr.detectChanges();
       },
     });
   }
 
-  private limparFormulario() {
-    this.nome = '';
-    this.tipoDespesa = 'fixa';
-    this.orcamentoMensal = null;
-    this.iconeSelecionado = 'bi-cart3';
-    this.corSelecionada = '#0072ff';
+  getMensagemErro(campo: 'categoria' | 'descricao' | 'valor'): string {
+    const control = this.categoriaForm.controls[campo];
+
+    if (!control.touched && !control.dirty) {
+      return '';
+    }
+
+    if (control.hasError('required')) {
+      return campo === 'valor'
+        ? 'Informe o valor da categoria.'
+        : `Informe ${campo === 'categoria' ? 'o nome' : 'a descricao'} da categoria.`;
+    }
+
+    if (control.hasError('whitespace')) {
+      return campo === 'categoria'
+        ? 'O nome da categoria nao pode conter apenas espacos.'
+        : 'A descricao da categoria nao pode conter apenas espacos.';
+    }
+
+    if (control.hasError('minlength')) {
+      return campo === 'categoria'
+        ? 'O nome deve ter pelo menos 3 caracteres.'
+        : 'A descricao deve ter pelo menos 3 caracteres.';
+    }
+
+    if (control.hasError('maxlength')) {
+      return campo === 'categoria'
+        ? 'O nome deve ter no maximo 60 caracteres.'
+        : 'A descricao deve ter no maximo 120 caracteres.';
+    }
+
+    if (campo === 'valor' && control.hasError('min')) {
+      return 'O valor nao pode ser negativo.';
+    }
+
+    return '';
   }
 
-  private hexToRgba(hex: string, alpha: number) {
+  private textoLimpo(valor: unknown): string {
+    return typeof valor === 'string' ? valor.trim() : '';
+  }
+
+  private normalizarValorMonetario(valor: unknown): number | null {
+    if (typeof valor === 'number') {
+      return Number.isFinite(valor) ? Number(valor.toFixed(2)) : null;
+    }
+
+    if (typeof valor === 'string') {
+      const normalizado = valor.trim().replace(/\./g, '').replace(',', '.');
+      const numero = Number(normalizado);
+      return Number.isFinite(numero) ? Number(numero.toFixed(2)) : null;
+    }
+
+    return null;
+  }
+
+  private hexToRgba(hex: string, alpha: number): string {
     const semHash = hex.replace('#', '');
     const valor = Number.parseInt(semHash, 16);
     const r = (valor >> 16) & 255;

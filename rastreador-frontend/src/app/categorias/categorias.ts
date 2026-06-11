@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { SidebarMenu } from '../sidebar-menu/sidebar-menu';
 import { CategoriaApi, CategoriasService } from './categorias.service';
@@ -11,6 +11,12 @@ type CategoriaCard = {
   valor: number | null;
 };
 
+type CategoriaEdicaoCache = CategoriaCard & {
+  tipoDespesa?: string;
+  cor?: string;
+  icone?: string;
+};
+
 @Component({
   selector: 'app-categorias',
   imports: [RouterLink, SidebarMenu],
@@ -19,6 +25,7 @@ type CategoriaCard = {
 })
 export class Categorias implements OnInit {
   private readonly categoriasService = inject(CategoriasService);
+  private readonly router = inject(Router);
 
   menuAberto = false;
   carregando = signal(true);
@@ -89,6 +96,15 @@ export class Categorias implements OnInit {
         alert('Nao foi possivel excluir a categoria.');
       },
     });
+  }
+
+  abrirEdicaoCategoria(categoria: CategoriaCard): void {
+    const cache: CategoriaEdicaoCache = {
+      ...categoria,
+    };
+
+    sessionStorage.setItem('categoria_edicao_cache', JSON.stringify(cache));
+    void this.router.navigate(['/categorias/editar', categoria.id]);
   }
 
   obterCorCategoria(indice: number): string {

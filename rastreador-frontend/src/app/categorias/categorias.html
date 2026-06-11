@@ -1,121 +1,111 @@
-<app-sidebar-menu></app-sidebar-menu>
+<div class="app-layout">
+  <app-sidebar-menu></app-sidebar-menu>
 
-<div class="dashboard-wrapper">
-  <div class="main-content" id="mainContent">
-    <header class="top-navbar">
-      <div class="d-flex align-items-center">
-        <button class="btn btn-light d-md-none me-2" id="sidebarToggle" type="button">
-          <i class="bi bi-list fs-4"></i>
-        </button>
-        <h4 class="mb-0 fw-bold text-dark d-none d-md-block">Gestão de Categorias</h4>
+  <main class="main-content">
+    <header class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold mb-0">Gestão de Categorias</h2>
+        <p class="text-muted mb-0 mt-1">Organize os limites e acompanhe os gastos por categoria.</p>
       </div>
 
-      <div class="d-flex align-items-center gap-3">
-        <div class="d-flex align-items-center gap-2">
-          <div
-            class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold"
-            style="width: 40px; height: 40px;" >
-            US
-          </div>
-        </div>
-      </div>
+      <a routerLink="/categorias/cadastro" class="btn btn-primary-gradient d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 text-decoration-none">
+        <i class="bi bi-plus-lg"></i>
+        <span>Nova categoria</span>
+      </a>
     </header>
 
-    <div class="content-padding">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-        <div>
-          <h2 class="fw-bold text-dark mb-1">Categorias de Gastos</h2>
-          <p class="text-muted mb-0">Organize suas despesas criando categorias e limites mensais.</p>
-        </div>
-
-        <a routerLink="/categorias/cadastro" class="btn btn-primary-gradient px-4 py-2 rounded-3 d-flex align-items-center gap-2">
-          <i class="bi bi-plus-lg"></i>
-          <span>Nova Categoria</span>
-        </a>
+    @if (erroCarregamento()) {
+      <div class="dashboard-state card-clean mb-4 text-center dashboard-state-error">
+        <i class="bi bi-exclamation-triangle fs-3 text-danger mb-2"></i>
+        <p class="mb-0 fw-semibold">{{ erroCarregamento() }}</p>
       </div>
+    }
 
-      @if (erroCarregamento()) {
-        <div class="alert alert-warning border-0 shadow-sm mb-4" role="alert">
-          {{ erroCarregamento() }}
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card-clean metrics-card">
+          <p class="text-muted small mb-1">Total de categorias</p>
+          <h4 class="fw-bold mb-0">{{ totalCategorias }}</h4>
         </div>
-      }
-
-      <div class="row g-3 mb-4">
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="bg-white p-3 rounded-3 shadow-sm border border-light">
-            <p class="text-muted small mb-1">Total de Categorias</p>
-            <h4 class="fw-bold mb-0">{{ totalCategorias }}</h4>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="bg-white p-3 rounded-3 shadow-sm border border-light">
-            <p class="text-muted small mb-1">Maior Valor</p>
-
-            <div class="d-flex justify-content-between align-items-end">
-              <h4 class="fw-bold mb-0 text-danger">{{ nomeMaiorCategoria }}</h4>
-              <span class="ms-2">{{ valorMaiorCategoria }}</span>
-            </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card-clean metrics-card">
+          <p class="text-muted small mb-1">Maior valor</p>
+          <div class="d-flex justify-content-between align-items-end">
+            <h4 class="fw-bold mb-0 text-danger text-truncate me-2">{{ nomeMaiorCategoria }}</h4>
+            <span class="fw-semibold">{{ valorMaiorCategoria }}</span>
           </div>
         </div>
       </div>
-
-      @if (carregando()) {
-        <div class="bg-white rounded-4 shadow-sm border p-5 text-center">
-          <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
-          <p class="mb-0 text-muted">Carregando suas categorias...</p>
-        </div>
-      } @else {
-        <div class="row g-4">
-          @for (categoria of categorias(); track categoria.id; let indice = $index) {
-            <div class="col-12 col-md-6 col-xl-4">
-              <div class="category-card p-4 border-top border-4" [style.borderTopColor]="obterCorCategoria(indice)">
-                <div class="category-actions">
-                  <a [routerLink]="['/categorias/editar', categoria.id]" class="btn-icon" title="Editar">
-                    <i class="bi bi-pencil"></i>
-                  </a>
-                  <button type="button" class="btn-icon danger ms-1" title="Inativar" (click)="removerCategoria(categoria.id)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-
-                <div class="d-flex align-items-center gap-3 mb-4">
-                  <div
-                    class="category-icon-large"
-                    [style.backgroundColor]="obterCorSuave(indice)"
-                    [style.color]="obterCorCategoria(indice)" >
-                    <i [class]="obterIconeCategoria(categoria.nome)"></i>
-                  </div>
-                  <div>
-                    <h5 class="fw-bold text-dark mb-0">{{ categoria.nome }}</h5>
-                    <span class="badge bg-light text-dark border mt-1">{{ categoria.descricao }}</span>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="d-flex justify-content-between small text-muted mb-1">
-                    <span>ID: <strong>{{ categoria.id }}</strong></span>
-                    <span>Valor: <strong>{{ formatarMoeda(categoria.valor) }}</strong></span>
-                  </div>
-                  <p class="small text-muted mb-0">
-                    {{ categoria.descricao }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          } @empty {
-            <div class="col-12">
-              <div class="bg-white rounded-4 shadow-sm border p-5 text-center">
-                <i class="bi bi-folder2-open fs-1 text-primary mb-3 d-block"></i>
-                <h5 class="fw-bold mb-2">Nenhuma categoria cadastrada</h5>
-                <p class="text-muted mb-4">Crie a primeira categoria para começar a organizar seus gastos.</p>
-                <a routerLink="/categorias/cadastro" class="btn btn-primary-gradient px-4 py-2 rounded-3">
-                  Nova Categoria
-                </a>
-              </div>
-            </div>
-          }
-        </div>
-      }
     </div>
-  </div>
+
+    @if (carregando()) {
+      <div class="dashboard-state card-clean text-center">
+        <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
+        <p class="mb-0 fw-semibold">Carregando suas categorias...</p>
+      </div>
+    } @else {
+      <div class="card-clean mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <h5 class="fw-bold mb-1"><i class="bi bi-arrow-down"></i>Categorias cadastradas</h5>
+            <p class="text-muted small mb-0">Os resultados são para o usuário logado.</p>
+          </div>
+          <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">{{ totalCategorias }} registro(s)</span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        @for (categoria of categorias(); track categoria.id; let indice = $index) {
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="category-card card-clean border-top border-4" [style.borderTopColor]="obterCorCategoria(indice)">
+              <div class="category-actions">
+                <button type="button" class="btn-icon" title="Editar" (click)="abrirEdicaoCategoria(categoria)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="btn-icon danger ms-1" title="Excluir" (click)="removerCategoria(categoria.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <div
+                  class="category-icon-large"
+                  [style.backgroundColor]="obterCorSuave(indice)"
+                  [style.color]="obterCorCategoria(indice)"
+                >
+                  <i [class]="obterIconeCategoria(categoria.nome)"></i>
+                </div>
+                <div class="pe-5">
+                  <h5 class="fw-bold text-dark mb-0 text-truncate">{{ categoria.nome }}</h5>
+                  <span class="badge bg-light text-dark border mt-1">{{ categoria.descricao }}</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="d-flex justify-content-between small text-muted mb-1">
+                  <span>ID: <strong>{{ categoria.id }}</strong></span>
+                  <span>Valor: <strong>{{ formatarMoeda(categoria.valor) }}</strong></span>
+                </div>
+                <p class="small text-muted mb-0">
+                  {{ categoria.descricao }}
+                </p>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="col-12">
+            <div class="dashboard-state card-clean text-center">
+              <i class="bi bi-folder2-open fs-1 text-primary mb-3 d-block"></i>
+              <h5 class="fw-bold mb-2">Nenhuma categoria cadastrada</h5>
+              <p class="text-muted mb-4">Crie a primeira categoria para começar a organizar seus gastos.</p>
+              <a routerLink="/categorias/cadastro" class="btn btn-primary-gradient px-4 py-2 rounded-3 text-decoration-none">
+                Nova categoria
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </main>
 </div>

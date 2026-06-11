@@ -1,35 +1,9 @@
 <div class="dashboard-wrapper">
-  <aside class="sidebar d-flex flex-column" id="sidebar" [class.show]="menuAberto">
-    <div class="sidebar-brand">
-      <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center brand-icon">
-        <i class="bi bi-wallet2 fs-5"></i>
-      </div>
-      Finova
-    </div>
-
-    <div class="flex-grow-1 mt-4">
-      <p class="text-white-50 small text-uppercase px-4 mb-2 section-label">Menu Principal</p>
-      <a routerLink="/home" class="nav-link-custom">
-        <i class="bi bi-grid-1x2-fill"></i> Dashboard
-      </a>
-      <a routerLink="/categorias" class="nav-link-custom active">
-        <i class="bi bi-tags"></i> Categorias
-      </a>
-    </div>
-
-    <div class="mt-auto mb-4">
-      <a routerLink="/login" class="nav-link-custom text-white-50 mt-1">
-        <i class="bi bi-box-arrow-right"></i> Terminar Sessao
-      </a>
-    </div>
-  </aside>
+  <app-sidebar-menu></app-sidebar-menu>
 
   <div class="main-content">
     <header class="top-navbar">
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-light d-md-none me-2" (click)="toggleSidebar()">
-          <i class="bi bi-list fs-4"></i>
-        </button>
         <nav aria-label="breadcrumb" class="d-none d-md-block">
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
@@ -39,8 +13,10 @@
         </nav>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <span class="fw-semibold text-dark">Utilizador Teste</span>
-        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold avatar">US</div>
+        <span class="fw-semibold text-dark">{{ nomeUsuario }}</span>
+        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold avatar">
+          US
+        </div>
       </div>
     </header>
 
@@ -53,47 +29,54 @@
               <p class="text-muted">Preencha os dados abaixo para organizar melhor as suas financas.</p>
             </div>
 
-            <form (ngSubmit)="salvarCategoria()">
+            <form [formGroup]="categoriaForm" (ngSubmit)="salvarCategoria()" novalidate>
               <div class="row g-3 mb-4">
                 <div class="col-md-7">
                   <label class="form-label fw-semibold small text-uppercase text-muted">Nome da Categoria</label>
                   <input
                     type="text"
                     class="form-control form-control-lg rounded-3"
-                    id="catName"
-                    name="catName"
-                    [(ngModel)]="nome"
+                    formControlName="categoria"
                     placeholder="Ex: Assinaturas de Streaming"
-                    required
+                    [class.is-invalid]="categoriaForm.controls.categoria.touched && categoriaForm.controls.categoria.invalid"
                   />
+                  <div class="invalid-feedback d-block" *ngIf="getMensagemErro('categoria') as erroCategoria">
+                    {{ erroCategoria }}
+                  </div>
                 </div>
 
                 <div class="col-md-5">
-                  <label class="form-label fw-semibold small text-uppercase text-muted">Tipo de Despesa</label>
-                  <select class="form-select form-control-lg rounded-3" name="tipoDespesa" [(ngModel)]="tipoDespesa">
-                    <option value="fixa">Despesa Fixa</option>
-                    <option value="variavel">Despesa Variavel</option>
-                    <option value="essencial">Essencial</option>
-                    <option value="lazer">Lazer / Estilo de Vida</option>
-                  </select>
+                  <label class="form-label fw-semibold small text-uppercase text-muted">Valor Mensal</label>
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text rounded-start-3">R$</span>
+                    <input
+                      type="number"
+                      class="form-control rounded-end-3"
+                      formControlName="valor"
+                      min="0"
+                      step="0.01"
+                      placeholder="0,00"
+                      [class.is-invalid]="categoriaForm.controls.valor.touched && categoriaForm.controls.valor.invalid"
+                    />
+                  </div>
+                  <div class="invalid-feedback d-block" *ngIf="getMensagemErro('valor') as erroValor">
+                    {{ erroValor }}
+                  </div>
                 </div>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-semibold small text-uppercase text-muted">Orcamento Mensal (Opcional)</label>
-                <div class="input-group input-group-lg">
-                  <span class="input-group-text rounded-start-3">R$</span>
-                  <input
-                    type="number"
-                    class="form-control rounded-end-3"
-                    name="orcamentoMensal"
-                    [(ngModel)]="orcamentoMensal"
-                    min="0"
-                    step="0.01"
-                    placeholder="0,00"
-                  />
+                <label class="form-label fw-semibold small text-uppercase text-muted">Descricao</label>
+                <textarea
+                  class="form-control rounded-3"
+                  rows="3"
+                  formControlName="descricao"
+                  placeholder="Ex: Gastos com mercado e feira"
+                  [class.is-invalid]="categoriaForm.controls.descricao.touched && categoriaForm.controls.descricao.invalid"
+                ></textarea>
+                <div class="invalid-feedback d-block" *ngIf="getMensagemErro('descricao') as erroDescricao">
+                  {{ erroDescricao }}
                 </div>
-                <div class="form-text mt-2">Defina um limite para receber alertas quando estiver proximo de atingi-lo.</div>
               </div>
 
               <div class="mb-4">
@@ -136,7 +119,11 @@
               </div>
 
               <div class="d-flex gap-3 mt-4">
-                <button type="submit" class="btn btn-primary-gradient px-5 py-3 rounded-3 flex-grow-1 flex-md-grow-0" [disabled]="salvando">
+                <button
+                  type="submit"
+                  class="btn btn-primary-gradient px-5 py-3 rounded-3 flex-grow-1 flex-md-grow-0"
+                  [disabled]="salvando || categoriaForm.invalid"
+                >
                   {{ salvando ? 'A guardar...' : 'Criar Categoria' }}
                 </button>
                 <a routerLink="/categorias" class="btn btn-light px-4 py-3 rounded-3 text-muted border">Cancelar</a>
@@ -164,14 +151,14 @@
                 </div>
                 <div>
                   <h5 class="fw-bold text-dark mb-0">{{ tituloPreview }}</h5>
-                  <span class="badge bg-light text-dark border mt-1">{{ tipoPreview }}</span>
+                  <span class="badge bg-light text-dark border mt-1">{{ descricaoPreview }}</span>
                 </div>
               </div>
 
               <div>
                 <div class="d-flex justify-content-between small text-muted mb-1">
                   <span>Gasto atual: <strong>{{ formatarMoeda(0) }}</strong></span>
-                  <span>Limite: {{ formatarMoeda(orcamentoMensal) }}</span>
+                  <span>Limite: {{ formatarMoeda(categoriaForm.controls.valor.value) }}</span>
                 </div>
                 <div class="progress progress-preview">
                   <div class="progress-bar" role="progressbar" [style.backgroundColor]="corSelecionada" style="width: 0%;"></div>
@@ -183,7 +170,7 @@
             <div class="alert alert-info border-0 mt-4 rounded-3 d-flex gap-3">
               <i class="bi bi-info-circle fs-4"></i>
               <div class="small">
-                As cores e icones ajudam a identificar rapidamente onde voce gasta o seu dinheiro.
+                O formulario valida nome, descricao e valor antes de enviar para a API.
               </div>
             </div>
 

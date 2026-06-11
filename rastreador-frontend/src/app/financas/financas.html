@@ -1,238 +1,159 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spend Up - Património e Assinaturas</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-
 <div class="app-layout">
-
-  <!-- SIDEBAR -->
   <app-sidebar-menu></app-sidebar-menu>
 
-  <!-- CONTEÚDO PRINCIPAL -->
   <main class="main-content">
-
-    <!-- HEADER -->
-    <header class="d-flex justify-content-between align-items-end mb-4">
+    <header class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
       <div>
-        <h2 class="fw-bold mb-0">Riqueza & Serviços Fixos</h2>
-        <p class="text-muted mb-0 mt-1">Multiplique o seu dinheiro e controle os custos recorrentes.</p>
+        <h2 class="fw-bold mb-0">Finanças</h2>
+        <p class="text-muted mb-0 mt-1">Gastos reais do banco do usuário autenticado.</p>
+      </div>
+
+      <div class="d-flex align-items-center bg-white border rounded-pill px-2 py-1 shadow-sm">
+        <button class="btn btn-sm btn-link text-muted text-decoration-none" type="button" (click)="mesAnterior()" aria-label="Mês anterior">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span class="px-3 fw-semibold text-dark small text-capitalize">{{ periodoAtual() }}</span>
+        <button class="btn btn-sm btn-link text-muted text-decoration-none" type="button" (click)="mesSeguinte()" aria-label="Próximo mês">
+          <i class="bi bi-chevron-right"></i>
+        </button>
       </div>
     </header>
 
-    <!-- ROW 1: Investimentos e Sugestão -->
-    <div class="row g-4 mb-4">
+    @if (carregando()) {
+      <div class="dashboard-state card-clean text-center mb-4">
+        <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
+        <p class="mb-0 fw-semibold">Carregando finanças do banco...</p>
+      </div>
+    }
 
-      <!-- KPIs de Investimento -->
-      <div class="col-xl-5 d-flex flex-column gap-4">
-        <div class="row g-4">
-          <div class="col-sm-6">
-            <div class="card-clean d-flex flex-column justify-content-center">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <p class="text-muted text-uppercase fw-bold mb-0" style="font-size: 0.7rem; letter-spacing: 1px;">Património Investido</p>
-                <i class="bi bi-graph-up-arrow" style="color: var(--blue-main);"></i>
-              </div>
-              <h3 class="fw-bold mb-0" style="color: var(--blue-dark);">R$ 14.250,00</h3>
-              <p class="mb-0 mt-2 small fw-medium" style="color: var(--blue-main);">+ R$ 320 (Este mês)</p>
-            </div>
+    @if (!carregando() && erroCarregamento()) {
+      <div class="dashboard-state card-clean text-center dashboard-state-error mb-4">
+        <i class="bi bi-exclamation-triangle fs-3 text-danger mb-2"></i>
+        <p class="mb-0 fw-semibold">{{ erroCarregamento() }}</p>
+      </div>
+    }
+
+    @if (!carregando() && !erroCarregamento()) {
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="card-clean metrics-card">
+            <p class="text-muted small mb-1">Total gasto</p>
+            <h4 class="fw-bold mb-0">{{ formatarMoeda(totalGasto()) }}</h4>
           </div>
-          <div class="col-sm-6">
-            <div class="card-clean d-flex flex-column justify-content-center">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <p class="text-muted text-uppercase fw-bold mb-0" style="font-size: 0.7rem; letter-spacing: 1px;">Rendimento Total</p>
-                <i class="bi bi-pie-chart" style="color: var(--text-dark);"></i>
-              </div>
-              <h3 class="fw-bold mb-0 text-dark">8.4% <span class="fs-6 text-muted fw-medium">/ a.a.</span></h3>
-              <p class="mb-0 mt-2 small fw-medium text-muted">A bater a inflação</p>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="card-clean metrics-card">
+            <p class="text-muted small mb-1">Lançamentos</p>
+            <h4 class="fw-bold mb-0">{{ quantidadeLancamentos() }}</h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="card-clean metrics-card">
+            <p class="text-muted small mb-1">Média por gasto</p>
+            <h4 class="fw-bold mb-0">{{ formatarMoeda(mediaDespesa()) }}</h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="card-clean metrics-card">
+            <p class="text-muted small mb-1">Maior despesa</p>
+            <div class="d-flex justify-content-between align-items-end gap-2">
+              <h5 class="fw-bold mb-0 text-danger text-truncate">{{ maiorDespesa()?.nome ?? 'Sem dados' }}</h5>
+              <span class="fw-semibold">{{ formatarMoeda(maiorDespesa()?.valor ?? 0) }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ajuda a Investir (Sugestão Inteligente do Sistema) -->
-      <div class="col-xl-7">
-        <div class="smart-suggestion-box h-100">
-          <div class="suggestion-icon">
-            <i class="bi bi-lightbulb"></i>
-          </div>
-          <div class="position-relative z-1">
-            <h5 class="fw-bold mb-2">Sugestão do SpendUp</h5>
-            <p class="mb-3 small" style="color: rgba(255,255,255,0.8); line-height: 1.5;">
-              Notámos que tem <strong>R$ 1.200,00 livres</strong> na sua conta principal que não estão a render.
-              O seu perfil é moderado. Sugerimos alocar 60% em Renda Fixa (CDB Liquidez) e 40% num Fundo de Índice (ETF) para diversificar.
-            </p>
-            <div class="d-flex gap-2">
-              <button class="btn btn-sm text-dark fw-bold" style="background-color: white; padding: 0.5rem 1rem; border-radius: 0.5rem;">
-                Ver Opções Recomendadas
-              </button>
-              <button class="btn btn-sm text-white border-0" style="background-color: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 0.5rem;">
-                Ignorar
-              </button>
+      <div class="row g-4">
+        <div class="col-xl-7 d-flex flex-column gap-4">
+          <div class="card-clean">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+              <div>
+                <h5 class="fw-bold mb-1">Lançamentos do mês</h5>
+                <p class="text-muted small mb-0">Lista baseada no que está salvo em `/despesas` para o usuário logado.</p>
+              </div>
             </div>
+
+            @if (despesas().length) {
+              <div class="expense-list">
+                @for (despesa of despesas(); track despesa.id) {
+                  <div class="expense-item">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="expense-icon">
+                        <i [class]="despesa.icone"></i>
+                      </div>
+                      <div>
+                        <p class="fw-bold text-dark mb-0">{{ despesa.nome }}</p>
+                        <p class="text-muted small mb-0">{{ despesa.categoria }} • {{ despesa.data }}</p>
+                        <p class="text-muted small mb-0">{{ despesa.descricao }}</p>
+                      </div>
+                    </div>
+                    <span class="fw-bold text-dark">{{ formatarMoeda(despesa.valor) }}</span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="dashboard-state text-center border-0 shadow-none p-4">
+                <i class="bi bi-receipt fs-3 text-muted mb-2"></i>
+                <p class="mb-0 fw-semibold">Nenhuma despesa lançada neste mês.</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="col-xl-5 d-flex flex-column gap-4">
+          <div class="card-clean">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h5 class="fw-bold mb-0">Gastos por categoria</h5>
+                <p class="text-muted small mb-0 mt-1">Comparação entre o orçamento da categoria e o gasto real.</p>
+              </div>
+            </div>
+
+            @if (categoriasGasto().length) {
+              <div class="category-limit-list">
+                @for (categoria of categoriasGasto(); track categoria.id) {
+                  <div class="category-limit">
+                    <div class="d-flex justify-content-between align-items-end mb-1">
+                      <div>
+                        <span class="fw-semibold text-dark d-block">{{ categoria.nome }}</span>
+                        <span class="text-muted small">
+                          {{ categoria.quantidade }} lançamento(s) • Restam {{ formatarMoeda(categoria.restante) }}
+                        </span>
+                      </div>
+                      <span class="fw-bold text-dark small">{{ formatarMoeda(categoria.gasto) }} / {{ formatarMoeda(categoria.limite) }}</span>
+                    </div>
+                    <div class="progress-slim">
+                      <div
+                        class="progress-slim-fill"
+                        [style.backgroundColor]="categoria.cor"
+                        [class.fill-high]="categoria.percentual >= 80"
+                        [class.fill-medium]="categoria.percentual >= 50 && categoria.percentual < 80"
+                        [class.fill-low]="categoria.percentual < 50"
+                        [style.width.%]="categoria.percentual"
+                      ></div>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="dashboard-state text-center border-0 shadow-none p-4">
+                <i class="bi bi-tags fs-3 text-muted mb-2"></i>
+                <p class="mb-0 fw-semibold">Ainda não há despesas para este período.</p>
+              </div>
+            }
+          </div>
+
+          <div class="card-clean">
+            <h5 class="fw-bold mb-3">Como cadastrar despesas no Postman</h5>
+            <ol class="small text-muted mb-0 ps-3">
+              <li>Faça login e copie o token retornado pela API.</li>
+              <li>Envie `POST http://localhost:9000/despesas` com o header `Authorization: Bearer SEU_TOKEN`.</li>
+              <li>Use `Content-Type: application/json` e envie nome, categoria, descricao, valor e data.</li>
+            </ol>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ROW 2: Carteira Atual e Gestor de Assinaturas -->
-    <div class="row g-4">
-
-      <!-- COLUNA ESQUERDA: Carteira de Investimentos -->
-      <div class="col-xl-6 d-flex flex-column gap-4">
-        <div class="card-clean flex-grow-1">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold mb-0">A Sua Carteira</h5>
-            <button class="btn btn-outline-custom btn-sm"><i class="bi bi-plus-lg"></i> Novo Aporte</button>
-          </div>
-
-          <!-- Item de Portefólio -->
-          <div class="portfolio-item pt-0">
-            <div class="d-flex justify-content-between align-items-end mb-1">
-              <div>
-                <span class="fw-semibold text-dark d-block">Reserva de Emergência (CDB)</span>
-                <span class="text-muted small">Baixo Risco • Liquidez Diária</span>
-              </div>
-              <div class="text-end">
-                <span class="fw-bold text-dark d-block">R$ 10.000,00</span>
-                <span class="text-muted small">70% da carteira</span>
-              </div>
-            </div>
-            <div class="progress-slim">
-              <div class="progress-slim-fill" style="width: 70%; background-color: var(--blue-dark);"></div>
-            </div>
-          </div>
-
-          <!-- Item de Portefólio -->
-          <div class="portfolio-item">
-            <div class="d-flex justify-content-between align-items-end mb-1">
-              <div>
-                <span class="fw-semibold text-dark d-block">Fundos Imobiliários (FIIs)</span>
-                <span class="text-muted small">Médio Risco • Renda Passiva</span>
-              </div>
-              <div class="text-end">
-                <span class="fw-bold text-dark d-block">R$ 3.000,00</span>
-                <span class="text-muted small">21% da carteira</span>
-              </div>
-            </div>
-            <div class="progress-slim">
-              <div class="progress-slim-fill" style="width: 21%; background-color: var(--blue-main);"></div>
-            </div>
-          </div>
-
-          <!-- Item de Portefólio -->
-          <div class="portfolio-item">
-            <div class="d-flex justify-content-between align-items-end mb-1">
-              <div>
-                <span class="fw-semibold text-dark d-block">Ações & ETFs</span>
-                <span class="text-muted small">Alto Risco • Longo Prazo</span>
-              </div>
-              <div class="text-end">
-                <span class="fw-bold text-dark d-block">R$ 1.250,00</span>
-                <span class="text-muted small">9% da carteira</span>
-              </div>
-            </div>
-            <div class="progress-slim">
-              <div class="progress-slim-fill" style="width: 9%; background-color: #60a5fa;"></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- COLUNA DIREITA: Radar de Assinaturas -->
-      <div class="col-xl-6 d-flex flex-column gap-4">
-        <div class="card-clean flex-grow-1">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h5 class="fw-bold mb-0">Radar de Assinaturas</h5>
-              <p class="text-muted small mb-0 mt-1">Total: <strong style="color: var(--blue-dark);">R$ 213,70 / mês</strong></p>
-            </div>
-            <button class="btn btn-outline-custom btn-sm"><i class="bi bi-search"></i> Detetar</button>
-          </div>
-
-          <!-- Alerta do Sistema -->
-          <div class="sub-alert mb-4">
-            <i class="bi bi-exclamation-circle-fill fs-5"></i>
-            <div>
-              <p class="mb-0 small fw-medium text-dark">Otimização Possível</p>
-              <p class="mb-0 text-muted" style="font-size: 0.75rem;">Você tem 3 serviços de Streaming de Vídeo ativos. Considera cancelar um para poupar R$ 45,90?</p>
-            </div>
-          </div>
-
-          <!-- Lista de Assinaturas -->
-          <div class="subscription-item">
-            <div class="d-flex align-items-center gap-3">
-              <div class="sub-icon-box"><i class="bi bi-play-btn-fill"></i></div>
-              <div>
-                <p class="fw-bold text-dark mb-0">Netflix Premium</p>
-                <p class="text-muted small mb-0">Próxima cobrança: Dia 15</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <span class="fw-bold text-dark d-block">R$ 55,90</span>
-              <button class="btn btn-link text-muted p-0 small text-decoration-none" style="font-size: 0.75rem;">Cancelar</button>
-            </div>
-          </div>
-
-          <div class="subscription-item">
-            <div class="d-flex align-items-center gap-3">
-              <div class="sub-icon-box"><i class="bi bi-music-note-beamed"></i></div>
-              <div>
-                <p class="fw-bold text-dark mb-0">Spotify Duo</p>
-                <p class="text-muted small mb-0">Próxima cobrança: Dia 22</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <span class="fw-bold text-dark d-block">R$ 24,90</span>
-              <button class="btn btn-link text-muted p-0 small text-decoration-none" style="font-size: 0.75rem;">Cancelar</button>
-            </div>
-          </div>
-
-          <div class="subscription-item">
-            <div class="d-flex align-items-center gap-3">
-              <div class="sub-icon-box"><i class="bi bi-box-seam"></i></div>
-              <div>
-                <p class="fw-bold text-dark mb-0">Amazon Prime</p>
-                <p class="text-muted small mb-0">Plano Anual • Custo rateado</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <span class="fw-bold text-dark d-block">R$ 14,90</span>
-              <button class="btn btn-link text-muted p-0 small text-decoration-none" style="font-size: 0.75rem;">Detalhes</button>
-            </div>
-          </div>
-
-          <div class="subscription-item mb-0">
-            <div class="d-flex align-items-center gap-3">
-              <div class="sub-icon-box"><i class="bi bi-bicycle"></i></div>
-              <div>
-                <p class="fw-bold text-dark mb-0">Ginásio SmartFit</p>
-                <p class="text-muted small mb-0">Plano Fidelidade • Dia 05</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <span class="fw-bold text-dark d-block">R$ 118,00</span>
-              <span class="text-muted small d-block" style="font-size: 0.75rem;">Fixo</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-    <div class="pb-5"></div>
+    }
   </main>
 </div>
-
-<!-- Bootstrap 5 JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
