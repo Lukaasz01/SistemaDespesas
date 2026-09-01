@@ -1,2 +1,32 @@
-#Dev Tools
-demoSpring/dev.bat
+# Build Java / Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Runtime Node baixado pelo frontend-maven-plugin
+node/
+demoSpring/node/
+
+# Build e dependências do front-end
+node_modules/
+dist/
+.angular/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Editores / IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

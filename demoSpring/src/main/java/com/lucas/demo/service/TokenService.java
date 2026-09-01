@@ -2,6 +2,7 @@ package com.lucas.demo.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.beans.factory.annotation.Value;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.lucas.demo.model.LoginModel;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenService {
-    private final String secret = "minha-senha-secreta-muito-forte";
+    @Value("${api.security.token.secret}")
+    private String secret;
     private final Set<String> tokensRevogados = ConcurrentHashMap.newKeySet();
 
     public String gerarToken(LoginModel usuario) {
